@@ -1,0 +1,2 @@
+# ArquitecturaCoreV1
+Respositorio
