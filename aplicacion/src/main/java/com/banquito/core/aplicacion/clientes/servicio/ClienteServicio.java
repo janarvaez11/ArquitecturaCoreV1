@@ -526,4 +526,5 @@ public class ClienteServicio {
         public long getPersonasJuridicas() { return personasJuridicas; }
         public void setPersonasJuridicas(long personasJuridicas) { this.personasJuridicas = personasJuridicas; }
     }
+    
 }

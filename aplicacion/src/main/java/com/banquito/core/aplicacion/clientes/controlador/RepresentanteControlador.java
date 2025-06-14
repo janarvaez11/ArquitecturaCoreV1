@@ -11,21 +11,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/representantes")
 public class RepresentanteControlador {
-/*
+
     private final RepresentanteServicio representanteServicio;
 
     public RepresentanteControlador(RepresentanteServicio representanteServicio) {
         this.representanteServicio = representanteServicio;
     }
 
-    @GetMapping("/{idEmpresa}/{idCliente}/{rol}")
-    public ResponseEntity<Representante> obtenerPorId(
-            @PathVariable Integer idEmpresa,
-            @PathVariable Integer idCliente,
-            @PathVariable String rol) {
+    @GetMapping("/{idRepresentante}")
+    public ResponseEntity<Representante> obtenerPorId(@PathVariable Integer idRepresentante) {
         try {
-            RepresentanteId id = new RepresentanteId(idEmpresa, idCliente, rol);
-            Representante representante = representanteServicio.buscarPorId(id);
+            Representante representante = representanteServicio.buscarPorId(idRepresentante);
             return ResponseEntity.ok(representante);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -73,15 +69,12 @@ public class RepresentanteControlador {
         }
     }
 
-    @PutMapping("/{idEmpresa}/{idCliente}/{rol}")
+    @PutMapping("/{idRepresentante}")
     public ResponseEntity<?> actualizar(
-            @PathVariable Integer idEmpresa,
-            @PathVariable Integer idCliente,
-            @PathVariable String rol,
+            @PathVariable Integer idRepresentante,
             @RequestBody Representante representante) {
         try {
-            RepresentanteId id = new RepresentanteId(idEmpresa, idCliente, rol);
-            representante.setId(id);
+            representante.setIdRepresentante(idRepresentante);
             Representante actualizado = representanteServicio.actualizar(representante);
             return ResponseEntity.ok(actualizado);
         } catch (Exception e) {
@@ -89,33 +82,29 @@ public class RepresentanteControlador {
         }
     }
 
-    @PatchMapping("/{idEmpresa}/{idCliente}/{rol}/estado")
+    @PatchMapping("/{idRepresentante}/estado")
     public ResponseEntity<?> cambiarEstado(
-            @PathVariable Integer idEmpresa,
-            @PathVariable Integer idCliente,
-            @PathVariable String rol,
+            @PathVariable Integer idRepresentante,
             @RequestParam String estado) {
         try {
-            RepresentanteId id = new RepresentanteId(idEmpresa, idCliente, rol);
-            Representante representante = representanteServicio.cambiarEstado(id, estado);
+            Representante.Estado estadoEnum = Representante.Estado.valueOf(estado.toUpperCase());
+            Representante representante = representanteServicio.cambiarEstado(idRepresentante, estadoEnum);
             return ResponseEntity.ok(representante);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: Estado inválido - " + estado);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al cambiar estado: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{idEmpresa}/{idCliente}/{rol}")
-    public ResponseEntity<?> eliminar(
-            @PathVariable Integer idEmpresa,
-            @PathVariable Integer idCliente,
-            @PathVariable String rol) {
+    @DeleteMapping("/{idRepresentante}")
+    public ResponseEntity<?> eliminar(@PathVariable Integer idRepresentante) {
         try {
-            RepresentanteId id = new RepresentanteId(idEmpresa, idCliente, rol);
-            representanteServicio.eliminar(id);
+            representanteServicio.eliminar(idRepresentante);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al eliminar representante: " + e.getMessage());
         }
     }
-         */
+        
 }

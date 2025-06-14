@@ -20,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/v1/direcciones")
 public class DireccionClienteControlador {
-/* 
+ 
     private final DireccionClienteServicio servicio;
 
     public DireccionClienteControlador(DireccionClienteServicio servicio) {
@@ -89,7 +89,10 @@ public class DireccionClienteControlador {
     @GetMapping("/tipo/{tipo}")
     public ResponseEntity<List<DireccionCliente>> buscarPorTipo(@PathVariable String tipo) {
         try {
-            return ResponseEntity.ok(servicio.buscarPorTipo(tipo));
+            DireccionCliente.TipoDireccion tipoEnum = DireccionCliente.TipoDireccion.valueOf(tipo.toUpperCase());
+            return ResponseEntity.ok(servicio.buscarPorTipo(tipoEnum));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -131,10 +134,14 @@ public class DireccionClienteControlador {
             @PathVariable Integer id, 
             @RequestParam String nuevoTipo) {
         try {
-            DireccionCliente direccion = servicio.cambiarTipo(id, nuevoTipo);
+            DireccionCliente.TipoDireccion tipoEnum = DireccionCliente.TipoDireccion.valueOf(nuevoTipo.toUpperCase());
+            DireccionCliente direccion = servicio.cambiarTipo(id, tipoEnum);
             return ResponseEntity.ok(direccion);
         } catch (DireccionNoEncontradaExcepcion e) {
             return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                               .body(new ErrorResponse("Error al cambiar tipo", "Tipo de dirección inválido: " + nuevoTipo));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                                .body(new ErrorResponse("Error al cambiar tipo", e.getMessage()));
@@ -181,5 +188,5 @@ public class DireccionClienteControlador {
         public String getMensaje() { return mensaje; }
         public void setMensaje(String mensaje) { this.mensaje = mensaje; }
     }
-*/
+
     }

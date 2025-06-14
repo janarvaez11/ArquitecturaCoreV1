@@ -20,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/v1/telefonos")
 public class TelefonoClienteControlador {
-/* 
+
     private final TelefonoClienteServicio servicio;
 
     public TelefonoClienteControlador(TelefonoClienteServicio servicio) {
@@ -82,7 +82,10 @@ public class TelefonoClienteControlador {
     @GetMapping("/tipo/{tipo}")
     public ResponseEntity<List<TelefonoCliente>> buscarPorTipo(@PathVariable String tipo) {
         try {
-            return ResponseEntity.ok(servicio.buscarPorTipo(tipo));
+            TelefonoCliente.TipoTelefono tipoEnum = TelefonoCliente.TipoTelefono.valueOf(tipo.toUpperCase());
+            return ResponseEntity.ok(servicio.buscarPorTipo(tipoEnum));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -125,7 +128,7 @@ public class TelefonoClienteControlador {
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Integer id, @RequestBody TelefonoCliente telefono) {
         try {
-            telefono.setIdTelefonoCliente(id);
+            telefono.setIdTelefono(id);
             TelefonoCliente telefonoActualizado = servicio.actualizar(telefono);
             return ResponseEntity.ok(telefonoActualizado);
         } catch (TelefonoNoEncontradoExcepcion e) {
@@ -144,10 +147,14 @@ public class TelefonoClienteControlador {
             @PathVariable Integer id, 
             @RequestParam String nuevoTipo) {
         try {
-            TelefonoCliente telefono = servicio.cambiarTipo(id, nuevoTipo);
+            TelefonoCliente.TipoTelefono tipoEnum = TelefonoCliente.TipoTelefono.valueOf(nuevoTipo.toUpperCase());
+            TelefonoCliente telefono = servicio.cambiarTipo(id, tipoEnum);
             return ResponseEntity.ok(telefono);
         } catch (TelefonoNoEncontradoExcepcion e) {
             return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                               .body(new ErrorResponse("Error al cambiar tipo", "Tipo de teléfono inválido: " + nuevoTipo));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                                .body(new ErrorResponse("Error al cambiar tipo", e.getMessage()));
@@ -194,5 +201,5 @@ public class TelefonoClienteControlador {
         public String getMensaje() { return mensaje; }
         public void setMensaje(String mensaje) { this.mensaje = mensaje; }
     }
-*/
-    }
+
+}

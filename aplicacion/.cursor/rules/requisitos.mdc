@@ -1,0 +1,373 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Introducción
+Este documento detalla los requerimientos funcionales para los módulos de “Productos Cuentas” y "Productos Préstamos" dentro del sistema core bancario. Su objetivo es proporcionar una comprensión clara y precisa de las funcionalidades necesarias para la definición, configuración y gestión de los diferentes productos (cuentas y préstamos) ofrecidos por el banco. Este documento servirá como base para el diseño, desarrollo, pruebas e implementación del módulo.
+Objetivos 
+Permitir al banco definir y configurar una amplia variedad de productos de cuentas y préstamos.
+Facilitar la parametrización detallada de las características y reglas de negocio asociadas a cada tipo de producto.
+Proporcionar una estructura flexible para adaptarse a las diferentes necesidades de los clientes y a las políticas internas del banco.
+Asegurar la integridad y consistencia de la información relacionada con los productos.
+Especificación de Requerimientos Funcionales: 
+Productos Cuentas
+1. Alcance
+El alcance de este módulo de "Productos Cuentas" abarca la gestión integral de los productos de cuenta ofrecidos por el banco, desde su concepción y configuración a través de la definición de Tipos de Cuentas, la creación de instancias específicas de estos productos mediante la Gestión de Cuentas, hasta su asignación y administración a los clientes finales en la sección de Cuentas Clientes. Esto incluye la parametrización detallada de tasas de interés y comisiones aplicables a los diferentes tipos de cuenta. El módulo permitirá al personal autorizado definir, modificar, consultar y gestionar los diferentes tipos de cuentas, así como las cuentas individuales asignadas a los clientes, incluyendo su ciclo de vida, saldos y vinculación con otros productos bancarios.
+2. Gestión de Tipos de Cuentas
+RF-TC-001: Definición de Tipos de Cuenta: El sistema debe permitir a los usuarios autorizados definir nuevos tipos de cuentas, especificando los siguientes atributos:
+Nombre del Tipo de Cuenta (texto, obligatorio).
+Descripción del Tipo de Cuenta (texto, obligatorio).
+Moneda(s) permitidas para las cuentas de este tipo (selección múltiple de monedas configuradas en el sistema, obligatorio). Desde la perspectiva de ingeniería, la interfaz de usuario deberá ofrecer una validación robusta para asegurar que se seleccione al menos una moneda válida del catálogo.
+Requisitos de Apertura (texto libre para describir los documentos y condiciones requeridas, obligatorio).
+Tipo de Cliente Permitido (selección única: Persona, Empresa, Ambos, obligatorio).
+Cuentas Contables Asociadas (mapeo a cuentas del módulo de contabilidad para débitos, créditos, comisiones, servicios, intereses, etc., obligatorio). Será crucial un diseño que permita una fácil vinculación con el módulo contable y asegure la integridad de los datos financieros.
+Servicios Asociados Permitidos (selección múltiple de servicios configurados en el sistema: tarjeta de débito, chequera, banca en línea, etc., opcional). La arquitectura deberá facilitar la extensibilidad para incorporar nuevos servicios en el futuro.
+Formas de Pago de Interés (selección múltiple: diario, mensual, trimestral, anual, al vencimiento, opcional).
+Tipo de Tasa de Interés por Defecto (selección de una tasa de interés predefinida del módulo de tasas, opcional).
+Comisiones y Cargos por Defecto (asociación a estructuras de comisiones y cargos predefinidas del módulo de tarifas, opcional). El diseño deberá permitir la reutilización de las definiciones de tasas y tarifas para mantener la consistencia.
+RF-TC-002: Modificación de Tipos de Cuenta: El sistema debe permitir a los usuarios autorizados modificar los atributos de un Tipo de Cuenta existente. Desde el punto de vista técnico, se requerirá un mecanismo de control de cambios (auditoría) que registre el usuario, la fecha, la hora y los valores modificados. Se deberá analizar el impacto de estas modificaciones en las Cuentas ya existentes.
+RF-TC-003: Consulta de Tipos de Cuenta: El sistema debe permitir a los usuarios consultar la información detallada de un Tipo de Cuenta específico. La implementación deberá garantizar una consulta eficiente, permitiendo la búsqueda y el filtrado por diversos criterios.
+RF-TC-004: Deshabilitación/Habilitación de Tipos de Cuenta: El sistema debe permitir deshabilitar Tipos de Cuenta para que no se puedan crear nuevas Cuentas bajo ellos, y habilitar Tipos de Cuenta previamente deshabilitados. A nivel de software, se deberá gestionar el estado de las Cuentas Clientes asociadas a Tipos de Cuenta deshabilitados y prevenir la eliminación de Tipos de Cuenta con dependencias activas.
+3. Parametrización de Tasas de Interés (Asociada a Tipos de Cuentas)
+RF-PI-001: Definición de Tasas por Rangos de Saldo: Para Tipos de Cuenta de ahorro, el sistema debe permitir definir tasas de interés diferenciadas según rangos de saldo. La interfaz de usuario deberá facilitar la creación y validación de estos rangos, asegurando la no superposición y la cobertura de todos los posibles saldos.
+RF-PI-002: Definición de Tasas por Plazos: Para Tipos de Cuenta de depósito a plazo fijo, el sistema debe permitir definir tasas de interés diferenciadas según plazos. La implementación deberá permitir la definición de plazos flexibles (días, meses, años) y la asignación de tasas correspondientes.
+RF-PI-003: Definición de Frecuencia de Capitalización: Para Tipos de Cuenta que generan intereses, el sistema debe permitir definir la frecuencia con la que se capitalizan los intereses (diaria, mensual, trimestral, etc.). A nivel técnico, este parámetro deberá ser configurable a nivel de Tipo de Cuenta y potencialmente a nivel de Cuenta específica.
+RF-PI-004: Definición de Método de Cálculo de Intereses: Para Tipos de Cuenta que generan intereses, el sistema debe permitir definir el método de cálculo (saldo diario, saldo promedio, etc.). La lógica de cálculo deberá ser robusta y precisa, considerando las diferentes metodologías bancarias.
+
+4. Parametrización de Comisiones y Cargos (Asociada a Tipos de Cuentas)
+RF-PC-001: Definición de Comisiones por Tipo de Transacción: El sistema debe permitir definir comisiones para diferentes tipos de transacciones (retiros, transferencias internas, transferencias interbancarias, etc.). El diseño deberá permitir la configuración de diferentes bases de cálculo (monto fijo, porcentaje) y asegurar la correcta aplicación según el tipo de transacción.
+RF-PC-002: Definición de Cargos Periódicos: El sistema debe permitir definir cargos que se aplican periódicamente (ej. mantenimiento de cuenta), especificando la frecuencia (mensual, trimestral, anual) y el monto. Se requerirá la implementación de un proceso automatizado para la aplicación de estos cargos en las fechas programadas.
+RF-PC-003: Definición de Cargos por Servicios Adicionales: El sistema debe permitir definir cargos por servicios específicos (ej. emisión de chequera, reposición de tarjeta de débito), especificando el monto. La arquitectura deberá permitir la aplicación de estos cargos de forma manual o automática al solicitar el servicio.
+RF-PC-004: Definición de Condiciones para Exención de Comisiones o Cargos: El sistema debe permitir definir reglas para la exención de comisiones o cargos basadas en atributos del cliente o de la cuenta. Se deberá implementar un motor de reglas flexible para evaluar las condiciones de exención al momento de la aplicación.
+RF-PC-005: Definición de Impuestos Aplicables: El sistema debe permitir asociar impuestos configurados en el sistema a los diferentes tipos de comisiones y cargos. La lógica de cálculo y aplicación de impuestos deberá cumplir con las regulaciones fiscales vigentes.
+5. Gestión de Cuentas
+RF-GC-001: Creación de Cuenta: El sistema debe permitir a los usuarios autorizados crear una nueva Cuenta basada en un Tipo de Cuenta existente. Al crear la Cuenta, se deben especificar:
+Tipo de Cuenta base (selección de un Tipo de Cuenta existente, obligatorio).
+Nombre de la Cuenta (texto, obligatorio).
+Descripción de la Cuenta (texto, opcional).
+Estado inicial de la Cuenta (activo por defecto, configurable, obligatorio).
+Posibilidad de modificar los atributos heredados del Tipo de Cuenta (servicios asociados, forma de pago de interés, tasa de interés específica, comisiones y cargos específicos), sujeto a las reglas de negocio definidas. Desde la ingeniería, se deberá asegurar la correcta herencia y la sobrescritura controlada de los atributos, manteniendo la integridad de los datos.
+Consideraciones técnicas: Se deberá implementar un mecanismo robusto para la generación de identificadores únicos para cada Cuenta.
+RF-GC-002: Modificación de Cuenta: El sistema debe permitir a los usuarios autorizados modificar los atributos específicos de una Cuenta (nombre, descripción, estado, atributos sobrescritos del Tipo de Cuenta). Se requerirá un sistema de auditoría para rastrear todas las modificaciones realizadas en las Cuentas.
+RF-GC-003: Consulta de Cuenta: El sistema debe permitir a los usuarios consultar la información detallada de una Cuenta específica. La implementación deberá asegurar una consulta eficiente y permitir la búsqueda por diversos parámetros.
+RF-GC-004: Cambio de Estado de Cuenta: El sistema debe permitir a los usuarios autorizados cambiar el estado de una Cuenta (habilitada, inhabilitada). A nivel de software, se deberá registrar la fecha y el usuario responsable del cambio, y definir claramente las implicaciones de cada estado en las operaciones de las Cuentas Cliente asociadas.
+6. Gestión de Cuentas Clientes
+RF-CC-001: Vinculación de Cuenta a Cliente(s): El sistema debe permitir vincular una Cuenta específica a uno o varios clientes existentes. La arquitectura de la base de datos deberá soportar una relación muchos-a-muchos entre Cuentas y Clientes, permitiendo la definición de roles y permisos.
+RF-CC-002: Asignación de Número de Cuenta Cliente: El sistema debe asignar un número único a cada Cuenta Cliente, siguiendo un formato configurable. Se deberá implementar un generador de números de cuenta único y configurable, con validaciones para evitar duplicados.
+RF-CC-003: Gestión de Firmas Autorizadas: El sistema debe permitir registrar y gestionar las firmas autorizadas para operar cada Cuenta Cliente. A nivel técnico, se deberá permitir la carga y almacenamiento seguro de imágenes de firmas, así como la definición de reglas de autorización.
+RF-CC-004: Gestión del Ciclo de Vida de la Cuenta Cliente: El sistema debe permitir actualizar y registrar los diferentes estados del ciclo de vida de la Cuenta Cliente. Se deberá implementar un sistema de gestión de estados robusto, registrando la fecha y el usuario de cada cambio, y activando las reglas de negocio correspondientes.
+RF-CC-005: Consulta de Saldos: El sistema debe permitir consultar el saldo de una Cuenta Cliente, diferenciando entre el saldo disponible y el saldo contable. La consulta deberá ser en tiempo real y reflejar el estado actual de la cuenta, considerando las transacciones pendientes.
+RF-CC-006: Histórico de Estados de Cuenta Cliente: El sistema debe mantener un registro histórico de todos los estados por los que ha pasado una Cuenta Cliente. La base de datos deberá diseñarse para almacenar y permitir la consulta eficiente del historial de estados.
+RF-CC-007: Vinculación con Productos Asociados: El sistema debe permitir registrar la vinculación de una Cuenta Cliente con otros productos del banco. Se deberá mantener la integridad referencial entre la Cuenta Cliente y los productos asociados.
+
+Productos Préstamos
+1. Alcance
+Este documento cubre los requerimientos funcionales para la definición y configuración de los productos de préstamo. No incluye los requerimientos relacionados con la originación, desembolso, gestión de pagos o cobranza de los préstamos, los cuales serán abordados en módulos funcionales separados.
+2. Gestión de Tipos de Préstamos
+RF-PL-001: Crear Tipo de Préstamo: El sistema debe permitir a un usuario autorizado crear un nuevo tipo de préstamo, especificando los siguientes atributos obligatorios: 
+Nombre del tipo de préstamo (texto, único). 
+Descripción del tipo de préstamo (texto). 
+Moneda base permitida (selección de lista predefinida). RN-PL-001.1: Un tipo de préstamo debe tener al menos una moneda base definida. 
+Monto mínimo de préstamo (numérico, con validación de rango). 
+Monto máximo de préstamo (numérico, con validación de rango, debe ser mayor o igual al monto mínimo). RN-PL-001.2: El monto máximo de préstamo debe ser mayor o igual al monto mínimo. 
+Plazo de amortización mínimo (numérico, en meses). 
+Plazo de amortización máximo (numérico, en meses, debe ser mayor o igual al plazo mínimo). RN-PL-001.3: El plazo de amortización máximo debe ser mayor o igual al plazo mínimo. 
+Tipos de garantía aceptados (selección múltiple de lista predefinida). 
+Requisitos para la aprobación (texto libre para descripción). 
+Tipo de Cliente elegible (selección de lista predefinida: Persona Natural, Persona Jurídica, Ambos, Segmentos específicos). 
+Cuenta contable de desembolso (selección de catálogo de cuentas). 
+Cuenta contable de ingreso por intereses (selección de catálogo de cuentas). 
+Cuenta contable de ingreso por comisiones (selección de catálogo de cuentas).
+RF-PL-002: Editar Tipo de Préstamo: El sistema debe permitir a un usuario autorizado modificar los atributos de un tipo de préstamo existente. Se deben mantener registros de auditoría de las modificaciones realizadas.
+RF-PL-003: Consultar Tipo de Préstamo: El sistema debe permitir a un usuario autorizado consultar los detalles de un tipo de préstamo específico.
+RF-PL-004: Listar Tipos de Préstamo: El sistema debe permitir a un usuario autorizado listar todos los tipos de préstamo definidos en el sistema, con opciones de filtrado por nombre, moneda y tipo de cliente.
+RF-PL-005: Deshabilitar/Habilitar Tipo de Préstamo: El sistema debe permitir a un usuario autorizado deshabilitar un tipo de préstamo para que no pueda ser utilizado en la creación de nuevos productos de préstamo. Los préstamos existentes basados en este tipo no se verán afectados. También debe permitir la habilitación de tipos de préstamo previamente deshabilitados. RN-PL-005.1: No se debe permitir la eliminación de tipos de préstamo que tengan préstamos de clientes asociados.
+3. Parametrización de Tasas de Interés por Tipo de Préstamo
+RF-PL-006: Definir Tipo de Tasa: Para cada tipo de préstamo, el sistema debe permitir la definición del tipo de tasa de interés aplicable: * Fija: Se define una tasa única para todo el plazo del préstamo. * Variable: Se define un índice de referencia (selección de lista predefinida) y un margen (numérico). El sistema deberá permitir la configuración de la frecuencia de revisión de la tasa. * Mixta: Se definen períodos con tasa fija y períodos con tasa variable. El sistema deberá permitir la configuración de la duración de cada período y los parámetros de la tasa variable para los períodos correspondientes.
+RF-PL-007: Definir Tasas por Monto: Para cada tipo de préstamo y tipo de tasa, el sistema debe permitir la definición de tasas de interés diferenciadas por rangos de monto del préstamo (definición de límite inferior y superior para cada rango y la tasa correspondiente). RN-PL-007.1: Los rangos de monto definidos deben ser consistentes (el límite superior de un rango debe ser mayor que el límite inferior).
+RF-PL-008: Definir Tasas por Plazo: Para cada tipo de préstamo y tipo de tasa, el sistema debe permitir la definición de tasas de interés diferenciadas por rangos de plazo de amortización (definición de límite inferior y superior para cada rango y la tasa correspondiente). RN-PL-008.1: Los rangos de plazo definidos deben ser consistentes (el límite superior de un rango debe ser mayor que el límite inferior).
+RF-PL-009: Definir Tasas por Perfil de Riesgo: El sistema debe permitir la vinculación de perfiles de riesgo de cliente (definidos en otro módulo) a los tipos de préstamo y la definición de tasas de interés diferenciadas para cada perfil.
+RF-PL-010: Definir Tasa Moratoria: Para cada tipo de préstamo, el sistema debe permitir la definición de la tasa de interés moratoria aplicable en caso de incumplimiento de pago.
+RF-PL-011: Definir Base de Cálculo de Intereses: Para cada tipo de préstamo, el sistema debe permitir la selección de la base de cálculo de los intereses (ej. 30/360, 31/365, Actual/360, Actual/365).
+RF-PL-012: Definir Frecuencia de Capitalización: Para cada tipo de préstamo, el sistema debe permitir la definición de la frecuencia de capitalización de los intereses (ej. mensual, trimestral, anual, al vencimiento).
+4. Parametrización de Esquemas de Amortización por Tipo de Préstamo
+RF-PL-013: Seleccionar Esquema de Amortización: Para cada tipo de préstamo, el sistema debe permitir la selección de los esquemas de amortización disponibles (ej. Francés, Alemán, Americano). Se deberá permitir la configuración de los parámetros específicos de cada esquema (ej. período de gracia para el esquema francés).
+5. Parametrización de Comisiones y Cargos por Tipo de Préstamo
+RF-PL-014: Definir Comisión por Originación/Desembolso: Para cada tipo de préstamo, el sistema debe permitir la definición de comisiones por originación o desembolso, especificando el tipo de cálculo (porcentaje del monto del préstamo o monto fijo) y el valor correspondiente.
+RF-PL-015: Definir Cargo por Pago Atrasado: Para cada tipo de préstamo, el sistema debe permitir la definición de cargos por pagos atrasados, especificando el tipo de cálculo (porcentaje del monto de la cuota vencida o monto fijo) y las condiciones de aplicación (ej. a partir de cuántos días de retraso).
+RF-PL-016: Definir Comisión por Prepago: Para cada tipo de préstamo, el sistema debe permitir la definición de comisiones por prepago (total o parcial), especificando el tipo de cálculo y las posibles restricciones (ej. período mínimo antes de poder prepagar).
+RF-PL-017: Definir Cargo por Modificación Contractual: Para cada tipo de préstamo, el sistema debe permitir la definición de cargos por modificaciones contractuales (ej. reestructuración, novación), especificando el monto fijo del cargo.
+RF-PL-018: Definir Cargo por Servicios Adicionales: Para cada tipo de préstamo, el sistema debe permitir la definición de cargos por servicios adicionales relacionados (ej. emisión de certificados), especificando el monto fijo del cargo.
+RF-PL-019: Definir Exenciones de Comisiones/Cargos: Para cada tipo de préstamo, el sistema debe permitir la definición de condiciones para la exención de comisiones o cargos (ej. para ciertos segmentos de clientes).
+RF-PL-020: Definir Impuestos Aplicables: Para cada tipo de comisión o cargo, el sistema debe permitir la definición de los impuestos aplicables (selección de lista predefinida de impuestos).
+6. Gestión de Productos de Préstamo (Instancias)
+RF-PL-021: Crear Producto de Préstamo: El sistema debe permitir a un usuario autorizado crear un nuevo producto de préstamo basado en un tipo de préstamo preexistente. Al crear el producto, se deben poder especificar o modificar (dentro de los límites definidos en el tipo de préstamo base) los siguientes atributos: * Nombre del producto de préstamo (texto, único). * Descripción del producto de préstamo (texto). * Tipo de préstamo base (selección de lista de tipos de préstamo habilitados). * Tasas de interés específicas (si difieren de las definidas a nivel de tipo, dentro de los rangos permitidos). RN-PL-021.1: Las tasas de interés especificadas para un producto de préstamo deben estar dentro de los rangos definidos para el tipo de préstamo base. * Esquema de amortización específico (si difiere del definido a nivel de tipo). * Comisiones y cargos específicos (si difieren de los definidos a nivel de tipo). * Productos o servicios vinculados (selección de lista de productos/servicios). * Estado del producto (activo, inactivo).
+RF-PL-022: Editar Producto de Préstamo: El sistema debe permitir a un usuario autorizado modificar los atributos de un producto de préstamo existente. Se deben mantener registros de auditoría de las modificaciones realizadas. RN-PL-022.1: No se deben permitir modificaciones que afecten préstamos ya originados.
+RF-PL-023: Consultar Producto de Préstamo: El sistema debe permitir a un usuario autorizado consultar los detalles de un producto de préstamo específico.
+RF-PL-024: Listar Productos de Préstamo: El sistema debe permitir a un usuario autorizado listar todos los productos de préstamo definidos en el sistema, con opciones de filtrado por nombre, tipo de préstamo y estado.
+RF-PL-025: Activar/Inactivar Producto de Préstamo: El sistema debe permitir a un usuario autorizado activar o inactivar un producto de préstamo, controlando su disponibilidad para la originación de nuevos préstamos. RN-PL-025.1: No se debe permitir la eliminación de productos de préstamo que tengan préstamos de clientes asociados.
+
+Consideraciones No Funcionales
+Modularidad: El diseño del módulo debe ser modular para facilitar el mantenimiento y futuras extensiones.
+Flexibilidad: La arquitectura debe permitir la fácil adición de nuevos tipos de tasas, esquemas de amortización y comisiones.
+Validación de Datos: Se deben implementar validaciones robustas a nivel de interfaz de usuario y de base de datos para garantizar la integridad de los datos, asegurando el cumplimiento de las reglas de negocio integradas en los RF.
+Auditoría: Se debe implementar un sistema de auditoría para registrar las modificaciones realizadas en la configuración de los productos de préstamo.
+Seguridad: El acceso a las funcionalidades de configuración de productos de préstamo debe estar restringido a usuarios autorizados mediante un sistema de roles y permisos.
+Rendimiento: El sistema debe ser capaz de manejar un gran volumen de definiciones de productos de préstamo sin degradación del rendimiento.
+Integración: El módulo debe integrarse de manera eficiente con otros módulos del sistema core bancario (ej. módulo de clientes, módulo contable). El sistema debe mantener la integridad referencial.
+Banco BanQuito
+Descripción Funcional del Core Bancario
+Generalidades
+El Sistema bancario central debe permitir el manejo de más de una entidad bancaria. 
+Las entidades bancarias manejan sucursales, cada sucursal tiene un código único que la identifica; adicionalmente pro cada sucursal es necesario registrar la siguiente información: dirección, teléfono, dirección, locación y ubicación geográfica (la ubicación geográfica está dada por los valores de: latitud y longitud). 
+Una sucursal debe estar asignada a una locación geográfica; una locación geográfica es una construcción conceptual que está dada por la estructura política de un país; es decir para Ecuador esta estructura geográfica estaría conformada por: provincia, cantón y parroquia.
+De acuerdo con las regulaciones internas y del país es necesario llevar un registro de los días feriados de cada locación geográfica para los procesos de cobros, pagos y contabilidad.  Se debe tener en cuenta que la mayoría de los feriados son nacionales es decir aplican a todo el país; los días y domingos también deben ser registrados como días feriados.
+Gestión de clientes
+Los tipos de clientes personas y empresas.
+Un cliente es de una persona o empresa que ha contratado un producto del banco sea una cuenta o un préstamo.
+Las personas o empresas que no han contratado un producto pero muestran interés en una posible contratación son considerados prospectos.
+Independiente del tipo de cliente se debe registrar siempre las direcciones asociadas y sus números telefónicos de contacto.  Cada cliente debe tener un código único que lo identifique.
+La información para clientes de tipo persona difiere de los clientes de tipo empresa.
+Para un cliente de tipo persona se debe registrar la siguiente información: tipo de documento de identificación, número de documento de identificación, nombres, apellidos, género, fecha de nacimiento y dirección de correo electrónico.
+Para un cliente de tipo de empresa se debe registrar la siguiente información: razón social, nombre comercial, fecha de constitución y dirección de correo electrónico.
+Se debe tener en cuenta que una empresa está representada siempre por una persona por lo que es necesario registrar esta asociación, adicionalmente para todas las empresas es necesario registrar las personas que son accionistas mayoritarios.  Por regulaciones del banco todas las personas que se relacionan con una empresa deben también ser clientes del banco.
+Tanto para clientes de tipo persona como para clientes de tipo empresa se debe registrar adicionalmente: fecha de creación, fecha de activación, estado, fecha de cierre, fecha de última actualización y comentarios.
+Para cada cliente se debe registrar su contacto transaccional.  El contacto transaccional está dado por un número de teléfono y un correo electrónico; Los cuales serán utilizados por el banco para la comunicación digital con el cliente.
+Los estados que puede tener un cliente son activo, inactivo, suspendido, bloqueado y prospecto.
+Productos Bancarios
+El banco oferta dos tipos de productos principales: Cuentas y Préstamos; cada uno de estos productos es gestionado de forma independiente.
+Productos Cuentas
+Este módulo gestiona la apertura y cierre de cuentas, el seguimiento de saldos y la modificación de estados.  El módulo de cuentas es importante ya que permite al banco llevar un registro preciso y actualizado de las cuentas de sus clientes y gestionar las operaciones que se realizan en ellas.  Para que las cuentas puedan ser contratadas por los clientes es importante que estas primero sean configuradas y habilitadas como productos; esto implica la definición de reglas de negocio asociadas al producto, tales como los tipos de clientes permitidos, las tasas de interés aplicables y las tarifas y comisiones correspondientes.
+Las cuentas de un cliente se identifican mediante un número único y poseen un comportamiento específico, como se describe más adelante.
+El banco oferta diferentes tipos de cuentas para que se ajusten de mejor forma a las necesidades de cada tipo de cliente.
+Para facilitar la definición de productos Cuentas; se incluye el concepto de Tipo de Cuenta que permite definir el comportamiento general de un grupo de Productos de Tipo Cuenta.
+Tipos de Cuentas
+El sistema permite la definición de diferentes tipos de cuentas (ahorro, corriente, etc.), especificando las características generales que compartirán las cuentas creadas a partir de ellos. Estas características incluyen:
+Nombre y descripción del tipo de cuenta.
+Moneda(s) permitidas.
+Requisitos de apertura (ej. saldo mínimo, documentos requeridos).
+Tipo de Cliente permitido (ej. persona o empresa)
+Definición de las cuentas contables asociadas a las transacciones (ej. débitos, créditos, cobro de comisiones y servicios).
+Servicios asociados permitidos (ej. tarjeta de débito, chequera).
+Formas de pago de interés (ej. diario, mensual o trimestral)
+Tipo de Tasa de interés: el banco maneja diferentes tasas de interés que pueden ser aplicadas a un Tipo de Cuenta.
+Comisiones y Cargos que apliquen.
+Las seis primeras características (nombre, descripción, moneda, requisitos de apertura, tipo de cliente y definición de cuentas contables) son de definición obligatoria. Las demás características pueden especificarse al crear el producto cuenta concreto.
+Parametrización de Tasas de Interés: 
+El sistema debe permitir la parametrización de tasas de interés para cuentas de ahorro, incluyendo: 
+Definición de base de cálculo: 30/360 o 31/365.
+Definición de tasas por rangos de saldo.
+Definición de tasas por plazos (si aplica).
+Frecuencia de capitalización (ej. diaria, mensual).
+Método de cálculo de intereses (ej. saldo diario, saldo promedio).
+Parametrización de Comisiones y Cargos: 
+El sistema debe permitir la parametrización de comisiones y cargos aplicables a las cuentas, incluyendo: 
+Definición de comisiones por tipo de transacción (ej. retiros, transferencias) debe incluir la definición diferenciada para transferencias entre cuentas del mismo banco e interbancarias.
+Definición de cargos periódicos (ej. mantenimiento de cuenta).
+Definición de cargos por servicios adicionales (ej. chequeras, tarjetas de débito).
+Condiciones para la exención de comisiones o cargos (ej. personas con discapacidad o mayores de 65 años).
+Definición de los impuestos aplicables a cada tipo de comisión o cargo.
+Gestión de Cuentas
+Una Cuenta se crea a partir de un Tipo de Cuenta, heredando su comportamiento principal. Sin embargo, al crear una Cuenta específica, se pueden modificar ciertos atributos definidos en el Tipo de Cuenta, tales como los servicios asociados, la forma de pago de interés, la tasa de interés y las comisiones y cargos.
+Cada nueva Cuenta debe tener un nombre, descripción y estado. Adicionalmente, se debe llevar un control de la fecha en la que fue habilitada o inhabilitada. Las Cuentas son las instancias específicas de los productos que luego se asignan a los clientes.
+Cuentas de Clientes
+Una Cuenta Cliente representa la asignación de una Cuenta específica a uno o varios clientes. Cada Cuenta Cliente se identifica mediante un número único (ej. 8 dígitos, donde los dos primeros representan el Tipo de Cuenta asociado).
+La relación entre una Cuenta y uno o varios clientes se establece mediante el código único de cliente. Una Cuenta puede ser vinculada a múltiples titulares.
+Se deben registrar las firmas autorizadas asociadas a la Cuenta Cliente, siendo obligatorio definir al menos un firmante por cuenta.
+Las Cuentas Clientes tienen un ciclo de vida con los siguientes estados: creada, activa, inactiva, suspendida (por políticas del ente regulador), bloqueada (por políticas internas del banco).
+Las Cuentas Clientes reflejan el saldo, dividido en disponible (saldo que puede utilizar el cliente) y contable (saldo pendiente de confirmación).
+Es importante mantener un registro histórico de las fechas asociadas a cada estado del ciclo de vida de la Cuenta Cliente, permitiendo consultar el estado específico en cualquier momento.
+Se debe registrar la vinculación de la Cuenta Cliente con sus tarjetas de débito y chequeras.
+
+Productos Préstamos
+Este módulo gestiona la originación, administración y finalización de productos de crédito. El módulo de préstamos resulta fundamental para la actividad crediticia del banco, permitiendo llevar un control exhaustivo de los créditos otorgados a sus clientes, así como la gestión de los pagos y el seguimiento de las condiciones contractuales. Para que los préstamos puedan ser ofrecidos a los clientes, es imprescindible que previamente sean configurados y habilitados como productos. Esta configuración abarca la definición de las reglas de negocio inherentes al producto, tales como los tipos de clientes elegibles, las tasas de interés aplicables, los plazos de amortización, las garantías requeridas y las comisiones y cargos asociados.
+Cada préstamo otorgado a un cliente se identifica mediante un número único y se rige por un conjunto específico de condiciones, tal como se detalla a continuación.
+El banco pone a disposición una variedad de productos de préstamo diseñados para satisfacer las diversas necesidades financieras de sus diferentes segmentos de clientes.
+Para simplificar la definición de productos Préstamos, se introduce el concepto de Tipo de Préstamo, que facilita la definición del comportamiento general de un grupo de Productos de Tipo Préstamo.
+Tipos de Préstamos
+El sistema debe permitir la definición de distintos tipos de préstamos (hipotecario, vehicular, personal, empresarial, etc.), especificando las características generales que compartirán los préstamos creados a partir de ellos. Estas características incluyen:
+Nombre y descripción del tipo de préstamo.
+Montos mínimos y máximos de préstamo.
+Plazos de amortización permitidos (mínimo y máximo).
+Tipos de garantía aceptados (ej. hipotecaria, prendaria, personal).
+Requisitos para la aprobación (ej. historial crediticio, ingresos mínimos, documentación requerida).
+Tipo de Cliente elegible (ej. persona natural, persona jurídica, segmento específico).
+Definición de las cuentas contables asociadas a las transacciones (ej. desembolsos, pagos de capital e intereses, cobro de comisiones y seguros).
+Productos o servicios vinculados obligatorios u opcionales (ej. seguros, cuentas de depósito).
+Frecuencia de pago (ej. mensual, trimestral).
+Tipos de Tasa de interés: El banco maneja diferentes tipos de tasas de interés que pueden ser aplicadas a un Tipo de Préstamo (fija, variable, mixta).
+Esquemas de amortización: Definición de los métodos de cálculo de las cuotas (ej. francés, alemán, americano).
+Comisiones y Cargos aplicables.
+Las siete primeras características (nombre, descripción, moneda, montos, plazos, garantías y requisitos de aprobación) son de definición obligatoria. Las demás características pueden especificarse al crear el producto préstamo concreto.
+Parametrización de Tasas de Interés
+El sistema debe permitir la parametrización de tasas de interés para los diferentes tipos de préstamo, incluyendo:
+Definición del tipo de tasa: Fija, variable (con definición del índice de referencia y margen), mixta (con períodos fijos y variables).
+Definición de tasas por monto de préstamo.
+Definición de tasas por plazo de amortización.
+Definición de tasas diferenciadas por perfil de riesgo del cliente.
+Parametrización de tasas de interés moratorias.
+Definición de la base de cálculo de los intereses (ej. 30/360, 31/365, actual/360, actual/365).
+Frecuencia de capitalización de intereses (ej. mensual, trimestral, al vencimiento).
+Parametrización de Comisiones y Cargos
+El sistema debe permitir la parametrización de comisiones y cargos aplicables a los préstamos, incluyendo:
+Definición de comisiones por originación o desembolso.
+Definición de cargos por pagos atrasados o incumplimiento.
+Definición de comisiones por prepago (total o parcial) y las condiciones aplicables.
+Definición de cargos por modificaciones contractuales (ej. reestructuración, novación).
+Definición de cargos por servicios adicionales (ej. emisión de certificados).
+Condiciones para la exención de comisiones o cargos (ej. campañas promocionales).
+Definición de los impuestos aplicables a cada tipo de comisión o cargo.
+Gestión de Préstamos
+Un Préstamo se crea a partir de un Tipo de Préstamo, heredando su comportamiento principal. Sin embargo, al originar un Préstamo específico para un cliente, se pueden especificar o modificar ciertos atributos definidos en el Tipo de Préstamo, tales como la tasa de interés aplicada (dentro de los rangos permitidos), el plazo de amortización, las comisiones y cargos particulares, y los productos o servicios vinculados.
+Cada nuevo Préstamo debe tener un nombre, descripción y estado. Adicionalmente, se debe registrar la fecha de desembolso y la fecha de vencimiento contractual. Los Préstamos son las instancias específicas de los productos que luego se asignan a los clientes.
+Préstamos de Clientes
+Un Préstamo Cliente representa la formalización de un Préstamo específico a favor de uno o varios clientes. Cada Préstamo Cliente se identifica mediante un número único.
+La relación entre un Préstamo y uno o varios clientes se establece mediante el código único de cliente. Un Préstamo puede ser otorgado a un único titular o a varios co-deudores o avales.
+Se deben registrar las garantías asociadas al Préstamo Cliente, especificando el tipo de garantía, su descripción y el valor de tasación (si aplica).
+Los Préstamos Clientes tienen un ciclo de vida con los siguientes estados: solicitado, aprobado, desembolsado, vigente (en amortización), en mora, en proceso de cobro judicial, refinanciado, pagado, castigado.
+Es fundamental mantener un registro detallado del cronograma de pagos del Préstamo Cliente, incluyendo las fechas de vencimiento de cada cuota, el detalle de capital e intereses, y el saldo pendiente.
+Se debe registrar la información de las pólizas de seguro asociadas al préstamo (si aplica), incluyendo la compañía aseguradora, el tipo de seguro, el monto asegurado y las fechas de vigencia.
+Es importante mantener un registro histórico de las fechas asociadas a cada estado del ciclo de vida del Préstamo Cliente, permitiendo consultar el estado específico en cualquier momento.
+
+Transacciones
+Refiere a la parte del sistema que se encarga de gestionar y procesar las operaciones financieras que realizan los clientes del banco. Las funcionalidades que posee este módulo incluyen la realización de depósitos y retiros asociados a las cuentas de los clientes,  el registro y procesamiento de transferencias entre cuentas, el registro y procesamiento de pagos con tarjeta de débito, el registro y procesamiento de pagos con cheques. El módulo de transacciones es importante ya que permite al banco llevar un registro preciso y actualizado de las operaciones financieras que se realizan en sus cuentas y asegurar que estas operaciones se procesen de manera rápida y eficiente. 
+
+Proyecto: Banquito Originación
+Módulos: General y Clientes
+Este documento describe la que abarcará la revisión de APIs para los módulos General y Clientes; así como los datos pre-cargados que debe contener el sistema.
+Datos iniciales pre-cargados
+País
+•
+Ecuador
+Moneda
+•
+Dólar
+Banco
+•
+Banco BanQuito
+Sucursales
+1.
+Matriz
+2.
+Sucursal Sangolqui
+3.
+Sucursal Quito Sur
+Nota: Los datos deben ser inventados pero coherentes.
+Estructura Geográfica
+1.
+Solo crear la estructura para el país Ecuador
+2.
+La estructura debe permitir dos niveles
+a.
+Nivel 1: Provincia
+b.
+Nivel 2: Canton
+Locaciones geográficas
+1.
+Registrar todas las provincias de Ecuador
+2.
+Registrar todos los cantones de cada provincia del Ecuador
+Nota: La información debe ser real
+Feriados
+1.
+Registrar TODOS los feriados nacionales de Ecuador del 2024 y 2025
+Personas, Empresas y Clientes
+1.
+10 personas creadas
+2.
+3 Empresas creadas
+a.
+2 empresas con al menos 1 accionista
+b.
+1 empresa con al menos 2 accionistas
+3.
+10 Clientes creados:
+a.
+8 clientes deben referenciar a 8 personas
+b.
+2 clientes deben referencias a 2 empresas
+4.
+De los 10 clientes creados
+a.
+Deben tener entre 1 y 3 teléfonos
+b.
+Deben tener entre 1 y 3 direcciones
+c.
+Todos deben tener contacto transaccional
+Recordar:
+o
+Los clientes pertenecen a sucursales
+o
+Los clientes tienen nacionalidad
+o
+Las direcciones de los clientes deben pertenecer a una locación geográfica.
+Prueba Funcional
+Sucursales
+1.
+Creación de sucursales (asociadas a un banco)
+2.
+Modificación de la información de una sucursal (que información se podría modificar?)
+3.
+Eliminación lógica de una sucursal.
+4.
+Métodos de lectura necesarios para sucursales: Deberé listar todos las sucursales? Solo las activas? Buscar por location? Etc. Definir los métodos a implementar siguiendo el sentido común.
+Países
+1.
+Creación de países
+2.
+Modificación de información de país
+3.
+Métodos de lectura necesarios para país
+Monedas
+1.
+Creación de monedas por pais
+2.
+Asignación de moneda a una entidad bancaria
+Estructura Geográfica y Locación Geográfica
+•
+Nada
+Feriados
+•
+Crear feriados por país
+•
+Crear feriados por locación geográfica
+Personas y Empresas
+•
+Creación de Personas
+•
+Creación de Empresas
+•
+Definición de Accionistas de empresas
+•
+Obtención de información de una persona
+•
+Obtención de información de una empresa
+Clientes
+•
+Creación de clientes (Tengan en cuenta que un cliente se crea desde una persona o una empresa) esto es crítico, si hacen lo de siempre va a estar mal.
+•
+Asignación de direcciones a un cliente
+•
+Asignación de teléfonos a un cliente
+•
+Asignación de contacto transaccional a un cliente (UN cliente solo puede tener un contacto transaccional)
+•
+Modificación de información del cliente. Definir qué información se puede modificar
+•
+Modificación de direcciones de cliente
+•
+Modificación de teléfonos de cliente
+•
+Eliminación lógica de direcciones
+•
+Eliminación lógica de teléfonos
+•
+Modificación de información de contacto transaccional
+•
+Obtención información Completa de un cliente (debe incluir toda la información relacionada y válida) tengan cuidado con esto.
+•
+Obtención de información resumida de un cliente
+•
+
+Obtención de contacto transaccional de un cliente

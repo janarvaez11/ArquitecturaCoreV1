@@ -1,0 +1,221 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Prompt para Generación de Arquitectura de Servicios y Endpoints - Core Bancario "BanQuito"
+1. Rol y Objetivo
+Actúa como un Arquitecto de Software Senior especializado en sistemas financieros. Tu objetivo es diseñar una arquitectura de API RESTful robusta, modular y realista para el Core Bancario "BanQuito", basándote estrictamente en los requerimientos y la lógica de negocio que se detallan a continuación. El diseño debe ser factible para un proyecto universitario avanzado, pero siguiendo las mejores prácticas de la industria.
+
+2. Principios de Diseño Fundamentales
+Modularidad: Agrupa los endpoints en microservicios o módulos cohesivos por dominio de negocio (Clientes, Cuentas, Préstamos, etc.).
+
+RESTful: Sigue los principios REST. Usa los métodos HTTP (GET, POST, PUT, PATCH, DELETE) de forma semántica y correcta. Utiliza sustantivos en plural para las colecciones de recursos (p. ej., /clients, /accounts).
+
+Códigos de Estado HTTP: Usa los códigos de estado HTTP apropiadamente (200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Server Error).
+
+Nomenclatura Clara: Usa nombres claros y consistentes en español para los endpoints, atributos JSON y DTOs (Data Transfer Objects).
+
+
+Manejo de Errores: Define una estructura de respuesta de error consistente, por ejemplo: { "errorCode": "VALIDATION_ERROR", "message": "El campo 'numeroDocumento' es requerido.", "details": [...] }.
+
+Atomicidad y Relaciones: Presta especial atención a las relaciones críticas entre entidades, como la creación de un Cliente a partir de una Persona o Empresa preexistente.
+
+3. Resumen del Contexto de Negocio (Basado en Documentos)
+El sistema "BanQuito" es un Core Bancario que debe gestionar múltiples componentes:
+
+Módulo General: Administra la estructura base como bancos, sucursales, países, monedas y la estructura geográfica (provincias, cantones) y sus feriados.
+
+Módulo de Clientes: Gestiona la información de Personas y Empresas. Una Persona o Empresa se convierte en Cliente al contratar un producto. Los clientes tienen direcciones, teléfonos y un único contacto transaccional. Las empresas tienen accionistas, que también deben ser clientes.
+
+Módulo de Productos (Cuentas y Préstamos):
+
+Configuración (Back-office): Permite definir plantillas de productos (TipoCuenta, TipoPrestamo) con reglas generales (tasas, comisiones, requisitos). A partir de estas plantillas se crean productos específicos y comercializables (Cuenta, Prestamo).
+
+Gestión (Front-office): Asigna un producto (Cuenta, Prestamo) a un cliente, creando una instancia específica (CuentaCliente, PrestamoCliente) con un número único y un ciclo de vida propio.
+
+Módulo de Transacciones: Procesa operaciones financieras como depósitos, retiros y transferencias.
+
+4. Tarea: Definir Servicios y Endpoints
+Genera la especificación completa de la API REST, dividida por servicios. Para cada endpoint, define:
+
+Método HTTP y Ruta URL.
+
+Descripción clara de su propósito.
+
+Posibles Parámetros de consulta (Query Params).
+
+DTO para el Request Body (para POST/PUT/PATCH), incluyendo validaciones clave.
+
+Estructura del Response Body para una respuesta exitosa (2xx).
+
+Reglas de Negocio Críticas a validar.
+Recuerda todo en español aqui te lo pongo en ingles como ejemplo
+Servicio: General (/api/v1/general)
+Responsable de la información estructural y geográfica.
+
+Sucursales:
+
+POST /branches
+
+GET /branches
+
+GET /branches/{branchId}
+
+PUT /branches/{branchId}
+
+DELETE /branches/{branchId} (Eliminación lógica)
+
+Feriados:
+
+POST /holidays
+
+GET /holidays?year={año}&locationCode={code} (locationCode puede ser 'EC' para nacionales o un código de cantón/provincia)
+
+Ubicaciones Geográficas:
+
+GET /locations/provinces
+
+GET /locations/provinces/{provinceCode}/cantons
+
+Servicio: Clientes (/api/v1/clients-management)
+Gestiona la creación y administración de personas, empresas y su conversión a clientes.
+
+Personas (Entidades base, aún no son clientes):
+
+POST /persons
+
+GET /persons/{personId}
+
+GET /persons?identification={doc}
+
+PUT /persons/{personId}
+
+Empresas (Entidades base, aún no son clientes):
+
+POST /companies
+
+GET /companies/{companyId}
+
+PUT /companies/{companyId}
+
+POST /companies/{companyId}/shareholders (Regla: el accionista debe existir como Persona y ser Cliente).
+
+Clientes (El corazón del módulo):
+
+POST /clients
+
+DTO: { "entityType": "PERSON" | "COMPANY", "entityId": "...", "branchId": "..." }
+
+Regla Crítica: Este es el único endpoint para crear un Cliente. Valida que entityId corresponda a una Persona o Empresa existente que no sea ya un cliente. Asigna un código único de cliente.
+
+GET /clients (Con paginación y filtros: ?status=ACTIVE&name=...)
+
+GET /clients/{clientId}/full (Obtiene la información completa del cliente, incluyendo direcciones, teléfonos, datos de la persona/empresa asociada, etc.).
+
+GET /clients/{clientId}/summary (Obtiene una vista resumida).
+
+PATCH /clients/{clientId}/status (Para gestionar estados: activo, inactivo, suspendido, etc.).
+
+Direcciones y Teléfonos:
+
+POST /clients/{clientId}/addresses
+
+PUT /clients/{clientId}/addresses/{addressId}
+
+DELETE /clients/{clientId}/addresses/{addressId} (Lógico)
+
+POST /clients/{clientId}/phones
+
+PUT /clients/{clientId}/phones/{phoneId}
+
+DELETE /clients/{clientId}/phones/{phoneId} (Lógico)
+
+Contacto Transaccional:
+
+PUT /clients/{clientId}/transactional-contact
+
+Regla: Un cliente solo puede tener UN contacto transaccional. Este endpoint lo crea o lo actualiza.
+
+Servicio: Productos (/api/v1/products)
+Responsable de la configuración de las plantillas de productos que el banco ofrece. Acceso restringido a administradores.
+
+Tipos de Cuenta:
+
+POST /account-types (Define una plantilla general como "Cuenta de Ahorros Genérica").
+
+GET /account-types
+
+PUT /account-types/{typeId}
+
+Productos de Cuenta (Comercializables):
+
+POST /accounts
+
+DTO: { "accountTypeId": "...", "name": "Cuenta Ahorro Premium", "interestRate": 1.5, ... }
+
+Regla: Crea una instancia de producto configurable a partir de un account-type. Este es el producto que se ofrecerá al cliente, no la plantilla.
+
+GET /accounts (Lista los productos de cuenta disponibles para contratar).
+
+GET /accounts/{productId}
+
+Tipos de Préstamo:
+
+POST /loan-types
+
+GET /loan-types
+
+Productos de Préstamo (Comercializables):
+
+POST /loans (Crea un producto de préstamo a partir de un loan-type, p. ej., "Préstamo Vehicular 2024").
+
+GET /loans (Lista los productos de préstamo disponibles).
+
+GET /loans/{productId}
+
+Servicio: Cuentas de Clientes (/api/v1/customer-accounts)
+Gestiona las cuentas que los clientes han contratado.
+
+POST /
+
+DTO: { "clientId": "...", "productId": "..." }
+
+Regla: Vincula un Cliente con un Producto de Cuenta del servicio de Productos. Genera el número de cuenta único para el cliente (p. ej., de 8 dígitos) y la establece en estado "Creada" o "Activa".
+
+GET /{accountNumber} (Obtiene el detalle completo de la cuenta de un cliente).
+
+GET /by-client/{clientId} (Lista todas las cuentas de un cliente).
+
+GET /{accountNumber}/balance (Diferencia entre saldo contable y disponible).
+
+PATCH /{accountNumber}/status (Gestiona el ciclo de vida: activa, inactiva, bloqueada, etc.).
+
+GET /{accountNumber}/statement?startDate=...&endDate=... (Obtiene el estado de cuenta).
+
+Servicio: Préstamos de Clientes (/api/v1/customer-loans)
+Gestiona los préstamos que los clientes han contratado.
+
+POST / (Originación de un préstamo)
+
+DTO: { "clientId": "...", "productId": "...", "amount": 5000, "term": 24, ... }
+
+Regla: Inicia la solicitud de un préstamo para un cliente, basándose en un producto de préstamo. El estado inicial es "Solicitado".
+
+GET /{loanId} (Detalle completo del préstamo).
+
+GET /by-client/{clientId} (Lista todos los préstamos de un cliente).
+
+PATCH /{loanId}/status (Gestiona el ciclo de vida: aprobado, desembolsado, en mora, pagado, etc.).
+
+GET /{loanId}/amortization-schedule (Genera y devuelve la tabla de amortización).
+
+Servicio: Transacciones (/api/v1/transactions)
+Procesa las operaciones financieras.
+
+POST /deposit ({ "destinationAccountNumber": "...", "amount": 100.00, "currency": "USD" })
+
+POST /withdrawal ({ "sourceAccountNumber": "...", "amount": 50.00, "currency": "USD" })
+
+
+POST /transfer ({ "sourceAccountNumber": "...", "destinationAccountNumber": "...", "amount": 75.00, "isInterbank": false })
