@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/contactos")
 public class ContactoTransaccionClienteControlador {
-/*
+
     private final ContactoTransaccionClienteServicio servicio;
 
     public ContactoTransaccionClienteControlador(ContactoTransaccionClienteServicio servicio) {
         this.servicio = servicio;
-    }
+    }       
 
     @GetMapping("/{id}")
     public ResponseEntity<ContactoTransaccionCliente> obtenerPorId(@PathVariable Integer id) {
@@ -64,7 +64,7 @@ public class ContactoTransaccionClienteControlador {
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Integer id, @RequestBody ContactoTransaccionCliente contacto) {
         try {
-            contacto.setIdContactoTransaccionCliente(id);
+            contacto.setIdContactoTransaccion(id);
             ContactoTransaccionCliente actualizado = servicio.actualizar(contacto);
             return ResponseEntity.ok(actualizado);
         } catch (Exception e) {
@@ -81,5 +81,5 @@ public class ContactoTransaccionClienteControlador {
             return ResponseEntity.badRequest().body("Error al eliminar contacto: " + e.getMessage());
         }
     }
-         */
+         
 }
