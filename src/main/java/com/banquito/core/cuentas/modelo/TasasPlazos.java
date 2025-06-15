@@ -1,24 +1,20 @@
 package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "tasas_plazos", schema = "public")
+@Table(name = "tasas_plazos")
 public class TasasPlazos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('tasas_plazos_id_plazo_seq')")
     @Column(name = "id_plazo", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_tasa_interes", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_tasa_interes", referencedColumnName = "id_tasa_interes", nullable = false)
     private TasasIntereses idTasaInteres;
 
     @Column(name = "plazo_minimo", nullable = false, precision = 15, scale = 2)
@@ -35,6 +31,13 @@ public class TasasPlazos {
 
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
+
+    public TasasPlazos() {
+    }
+
+    public TasasPlazos(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -90,6 +93,38 @@ public class TasasPlazos {
 
     public void setVersion(BigDecimal version) {
         this.version = version;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TasasPlazos other = (TasasPlazos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "TasasPlazos [id=" + id + ", idTasaInteres=" + idTasaInteres + ", plazoMinimo=" + plazoMinimo
+                + ", plazoMaximo=" + plazoMaximo + ", tasa=" + tasa + ", estado=" + estado + ", version=" + version
+                + "]";
     }
 
 }

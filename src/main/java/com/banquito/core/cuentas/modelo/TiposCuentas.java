@@ -2,7 +2,6 @@ package com.banquito.core.cuentas.modelo;
 
 import com.banquito.core.general.modelo.Monedas;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,11 +11,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tipos_cuentas", schema = "public")
+@Table(name = "tipos_cuentas")
 public class TiposCuentas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('tipos_cuentas_id_tipo_cuenta_seq')")
     @Column(name = "id_tipo_cuenta", nullable = false)
     private Integer id;
 

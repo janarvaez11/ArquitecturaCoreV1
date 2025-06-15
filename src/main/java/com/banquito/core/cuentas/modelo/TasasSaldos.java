@@ -1,24 +1,22 @@
 package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "tasas_saldos", schema = "public")
+@Table(name = "tasas_saldos")
 public class TasasSaldos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('tasas_saldos_id_saldo_seq')")
     @Column(name = "id_saldo", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_tasa_interes", nullable = false)
+    @JoinColumn(name = "id_tasa_interes", referencedColumnName = "id_tasa_interes", nullable = false)
     private TasasIntereses idTasaInteres;
 
     @Column(name = "saldo_minimo", nullable = false, precision = 15, scale = 2)

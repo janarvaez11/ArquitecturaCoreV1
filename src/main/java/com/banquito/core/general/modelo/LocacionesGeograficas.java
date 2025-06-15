@@ -12,7 +12,6 @@ import java.util.Set;
 public class LocacionesGeograficas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('locaciones_geograficas_id_locacion_seq')")
     @Column(name = "id_locacion", nullable = false)
     private Integer id;
 

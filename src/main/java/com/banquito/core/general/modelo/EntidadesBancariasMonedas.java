@@ -1,18 +1,16 @@
 package com.banquito.core.general.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "entidades_bancarias_monedas", schema = "public")
+@Table(name = "entidades_bancarias_monedas")
 public class EntidadesBancariasMonedas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('entidades_bancarias_monedas_id_entidad_bancaria_moneda_seq')")
     @Column(name = "id_entidad_bancaria_moneda", nullable = false)
     private Integer id;
 

@@ -2,30 +2,24 @@ package com.banquito.core.cuentas.modelo;
 
 import com.banquito.core.clientes.modelo.Clientes;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "cuentas_clientes", schema = "public")
+@Table(name = "cuentas_clientes")
 public class CuentasClientes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('cuentas_clientes_id_cuenta_cliente_seq')")
     @Column(name = "id_cuenta_cliente", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_cuenta", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false)
     private Cuentas idCuenta;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_cliente", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false)
     private Clientes idCliente;
 
     @Column(name = "numero_cuenta", nullable = false, length = 10)
@@ -45,6 +39,13 @@ public class CuentasClientes {
 
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
+
+    public CuentasClientes() {
+    }
+
+    public CuentasClientes(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -116,6 +117,38 @@ public class CuentasClientes {
 
     public void setVersion(BigDecimal version) {
         this.version = version;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CuentasClientes other = (CuentasClientes) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "CuentasClientes [id=" + id + ", idCuenta=" + idCuenta + ", idCliente=" + idCliente + ", numeroCuenta="
+                + numeroCuenta + ", saldoDisponible=" + saldoDisponible + ", saldoContable=" + saldoContable
+                + ", fechaApertura=" + fechaApertura + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }
