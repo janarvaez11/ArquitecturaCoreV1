@@ -6,10 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "clientes", schema = "public")
@@ -23,17 +20,23 @@ public class Clientes {
     @Column(name = "tipo_entidad", nullable = false, length = 10)
     private String tipoEntidad;
 
+    @Column(name = "id_entidad", nullable = false)
+    private Integer idEntidadFk;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_entidad", nullable = false)
-    private com.banquito.core.clientes.modelo.Empresas idEntidad;
+    @JoinColumn(name = "id_entidad", referencedColumnName = "id_empresa", nullable = false, insertable = false, updatable = false)
+    private Empresas idEntidad;
 
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 
+    @Column(name = "nacionalidad", nullable = false)
+    private String nacionalidadFk;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "nacionalidad", nullable = false)
+    @JoinColumn(name = "nacionalidad", referencedColumnName = "codigo_pais", nullable = false, insertable = false, updatable = false)
     private Paises nacionalidad;
 
     @Column(name = "tipo_identificacion", nullable = false, length = 10)
@@ -51,7 +54,6 @@ public class Clientes {
     @Column(name = "canal_afiliacion", nullable = false, length = 15)
     private String canalAfiliacion;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "fecha_creacion", nullable = false)
     private Instant fechaCreacion;
 
@@ -64,23 +66,16 @@ public class Clientes {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
-    @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.ClientesSucursales> clientesSucursales = new LinkedHashSet<>();
+    public Clientes() {
+    }
 
-    @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.ContactosTransaccionalesClientes> contactosTransaccionalesClientes = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.DireccionesClientes> direccionesClientes = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.RepresentantesEmpresas> representantesEmpresas = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.TelefonosClientes> telefonosClientes = new LinkedHashSet<>();
+    public Clientes(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -98,11 +93,19 @@ public class Clientes {
         this.tipoEntidad = tipoEntidad;
     }
 
-    public com.banquito.core.clientes.modelo.Empresas getIdEntidad() {
+    public Integer getIdEntidadFk() {
+        return idEntidadFk;
+    }
+
+    public void setIdEntidadFk(Integer idEntidadFk) {
+        this.idEntidadFk = idEntidadFk;
+    }
+
+    public Empresas getIdEntidad() {
         return idEntidad;
     }
 
-    public void setIdEntidad(com.banquito.core.clientes.modelo.Empresas idEntidad) {
+    public void setIdEntidad(Empresas idEntidad) {
         this.idEntidad = idEntidad;
     }
 
@@ -112,6 +115,14 @@ public class Clientes {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getNacionalidadFk() {
+        return nacionalidadFk;
+    }
+
+    public void setNacionalidadFk(String nacionalidadFk) {
+        this.nacionalidadFk = nacionalidadFk;
     }
 
     public Paises getNacionalidad() {
@@ -194,52 +205,46 @@ public class Clientes {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public Set<com.banquito.core.clientes.modelo.ClientesSucursales> getClientesSucursales() {
-        return clientesSucursales;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 
-    public void setClientesSucursales(Set<com.banquito.core.clientes.modelo.ClientesSucursales> clientesSucursales) {
-        this.clientesSucursales = clientesSucursales;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Clientes other = (Clientes) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 
-    public Set<com.banquito.core.clientes.modelo.ContactosTransaccionalesClientes> getContactosTransaccionalesClientes() {
-        return contactosTransaccionalesClientes;
+    @Override
+    public String toString() {
+        return "Clientes [id=" + id + ", tipoEntidad=" + tipoEntidad + ", idEntidadFk=" + idEntidadFk 
+                + ", nombre=" + nombre + ", nacionalidadFk=" + nacionalidadFk + ", tipoIdentificacion=" + tipoIdentificacion 
+                + ", numeroIdentificacion=" + numeroIdentificacion + ", tipoCliente=" + tipoCliente 
+                + ", segmento=" + segmento + ", canalAfiliacion=" + canalAfiliacion + ", fechaCreacion=" + fechaCreacion 
+                + ", fechaActualizacion=" + fechaActualizacion + ", comentarios=" + comentarios 
+                + ", estado=" + estado + ", version=" + version + "]";
     }
-
-    public void setContactosTransaccionalesClientes(Set<com.banquito.core.clientes.modelo.ContactosTransaccionalesClientes> contactosTransaccionalesClientes) {
-        this.contactosTransaccionalesClientes = contactosTransaccionalesClientes;
-    }
-
-    public Set<com.banquito.core.clientes.modelo.DireccionesClientes> getDireccionesClientes() {
-        return direccionesClientes;
-    }
-
-    public void setDireccionesClientes(Set<com.banquito.core.clientes.modelo.DireccionesClientes> direccionesClientes) {
-        this.direccionesClientes = direccionesClientes;
-    }
-
-    public Set<com.banquito.core.clientes.modelo.RepresentantesEmpresas> getRepresentantesEmpresas() {
-        return representantesEmpresas;
-    }
-
-    public void setRepresentantesEmpresas(Set<com.banquito.core.clientes.modelo.RepresentantesEmpresas> representantesEmpresas) {
-        this.representantesEmpresas = representantesEmpresas;
-    }
-
-    public Set<com.banquito.core.clientes.modelo.TelefonosClientes> getTelefonosClientes() {
-        return telefonosClientes;
-    }
-
-    public void setTelefonosClientes(Set<com.banquito.core.clientes.modelo.TelefonosClientes> telefonosClientes) {
-        this.telefonosClientes = telefonosClientes;
-    }
-
 }

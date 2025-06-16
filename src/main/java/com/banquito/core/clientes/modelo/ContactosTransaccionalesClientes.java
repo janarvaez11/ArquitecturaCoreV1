@@ -5,7 +5,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -17,9 +16,12 @@ public class ContactosTransaccionalesClientes {
     @Column(name = "id_contacto_transaccional", nullable = false)
     private Integer id;
 
+    @Column(name = "id_cliente", nullable = false)
+    private Integer idClienteFk;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_cliente", nullable = false)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false, insertable = false, updatable = false)
     private Clientes idCliente;
 
     @Column(name = "telefono", nullable = false, length = 10)
@@ -37,8 +39,16 @@ public class ContactosTransaccionalesClientes {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
+
+    public ContactosTransaccionalesClientes() {
+    }
+
+    public ContactosTransaccionalesClientes(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -46,6 +56,14 @@ public class ContactosTransaccionalesClientes {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getIdClienteFk() {
+        return idClienteFk;
+    }
+
+    public void setIdClienteFk(Integer idClienteFk) {
+        this.idClienteFk = idClienteFk;
     }
 
     public Clientes getIdCliente() {
@@ -96,12 +114,43 @@ public class ContactosTransaccionalesClientes {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ContactosTransaccionalesClientes other = (ContactosTransaccionalesClientes) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactosTransaccionalesClientes [id=" + id + ", idClienteFk=" + idClienteFk + ", telefono=" + telefono 
+                + ", correoElectronico=" + correoElectronico + ", fechaCreacion=" + fechaCreacion 
+                + ", fechaActualizacion=" + fechaActualizacion + ", estado=" + estado + ", version=" + version + "]";
+    }
 }
