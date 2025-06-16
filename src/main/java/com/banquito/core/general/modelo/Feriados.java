@@ -1,5 +1,7 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoFeriadosEnum;
+import com.banquito.core.general.enums.TipoFeriadosEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -28,12 +30,14 @@ public class Feriados {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false, length = 15)
-    private String tipo;
+    private TipoFeriadosEnum tipo;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoFeriadosEnum estado = EstadoFeriadosEnum.ACTIVO;
 
     @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
@@ -79,19 +83,19 @@ public class Feriados {
         this.nombre = nombre;
     }
 
-    public String getTipo() {
+    public TipoFeriadosEnum getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoFeriadosEnum tipo) {
         this.tipo = tipo;
     }
 
-    public String getEstado() {
+    public EstadoFeriadosEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoFeriadosEnum estado) {
         this.estado = estado;
     }
 

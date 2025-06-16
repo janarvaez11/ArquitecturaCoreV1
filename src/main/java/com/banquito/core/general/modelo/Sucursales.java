@@ -1,5 +1,6 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoSucursalesEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -45,9 +46,10 @@ public class Sucursales {
     @Column(name = "longitud", nullable = false, precision = 11, scale = 8)
     private BigDecimal longitud;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoSucursalesEnum estado = EstadoSucursalesEnum.ACTIVO;
 
     @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
@@ -141,11 +143,11 @@ public class Sucursales {
         this.longitud = longitud;
     }
 
-    public String getEstado() {
+    public EstadoSucursalesEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoSucursalesEnum estado) {
         this.estado = estado;
     }
 

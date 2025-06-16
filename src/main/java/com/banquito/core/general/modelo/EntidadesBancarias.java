@@ -1,5 +1,6 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoEntidadesBancariasEnum;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -22,8 +23,9 @@ public class EntidadesBancarias {
     @Column(name = "codigo_internacional", nullable = false, length = 20)
     private String codigoInternacional;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoEntidadesBancariasEnum estado;
 
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
@@ -66,11 +68,11 @@ public class EntidadesBancarias {
         this.codigoInternacional = codigoInternacional;
     }
 
-    public String getEstado() {
+    public EstadoEntidadesBancariasEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoEntidadesBancariasEnum estado) {
         this.estado = estado;
     }
 

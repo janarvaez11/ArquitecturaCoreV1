@@ -1,5 +1,6 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoMonedasEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -26,8 +27,9 @@ public class Monedas {
     @Column(name = "simbolo", nullable = false, length = 5)
     private String simbolo;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoMonedasEnum estado;
 
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
@@ -67,11 +69,11 @@ public class Monedas {
         this.simbolo = simbolo;
     }
 
-    public String getEstado() {
+    public EstadoMonedasEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoMonedasEnum estado) {
         this.estado = estado;
     }
 

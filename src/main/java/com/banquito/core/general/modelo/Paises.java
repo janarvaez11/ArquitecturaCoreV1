@@ -1,5 +1,6 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoPaisesEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -20,8 +21,9 @@ public class Paises {
     @Column(name = "codigo_telefono", nullable = false, length = 4)
     private String codigoTelefono;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoPaisesEnum estado;
 
     @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
@@ -60,11 +62,11 @@ public class Paises {
         this.codigoTelefono = codigoTelefono;
     }
 
-    public String getEstado() {
+    public EstadoPaisesEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoPaisesEnum estado) {
         this.estado = estado;
     }
 

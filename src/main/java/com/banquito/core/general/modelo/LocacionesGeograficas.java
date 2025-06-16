@@ -1,5 +1,6 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoLocacionesGeograficasEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -34,9 +35,10 @@ public class LocacionesGeograficas {
     @Column(name = "codigo_postal", nullable = false, length = 6)
     private String codigoPostal;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoLocacionesGeograficasEnum estado = EstadoLocacionesGeograficasEnum.ACTIVO;
 
     @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
@@ -107,11 +109,11 @@ public class LocacionesGeograficas {
         this.codigoPostal = codigoPostal;
     }
 
-    public String getEstado() {
+    public EstadoLocacionesGeograficasEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoLocacionesGeograficasEnum estado) {
         this.estado = estado;
     }
 
