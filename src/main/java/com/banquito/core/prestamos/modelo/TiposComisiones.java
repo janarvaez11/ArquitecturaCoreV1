@@ -1,18 +1,16 @@
 package com.banquito.core.prestamos.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tipos_comisiones", schema = "public")
+@Table(name = "tipos_comisiones")
 public class TiposComisiones {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('tipos_comisiones_id_tipo_comision_seq')")
     @Column(name = "id_tipo_comision", nullable = false)
     private Integer id;
 
@@ -31,16 +29,21 @@ public class TiposComisiones {
     @Column(name = "monto", nullable = false, precision = 15, scale = 2)
     private BigDecimal monto;
 
-    @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @ColumnDefault("1")
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
 
     @OneToMany(mappedBy = "idTipoComision")
     private Set<ComisionesPrestamos> comisionesPrestamos = new LinkedHashSet<>();
+
+    public TiposComisiones() {
+    }
+
+    public TiposComisiones(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -112,6 +115,38 @@ public class TiposComisiones {
 
     public void setComisionesPrestamos(Set<ComisionesPrestamos> comisionesPrestamos) {
         this.comisionesPrestamos = comisionesPrestamos;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TiposComisiones other = (TiposComisiones) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "TiposComisiones [id=" + id + ", tipo=" + tipo + ", nombre=" + nombre + ", descripcion=" + descripcion
+                + ", tipoCalculo=" + tipoCalculo + ", monto=" + monto + ", estado=" + estado + ", version=" + version
+                + ", comisionesPrestamos=" + comisionesPrestamos + "]";
     }
 
 }

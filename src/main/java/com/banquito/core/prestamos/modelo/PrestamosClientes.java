@@ -2,9 +2,6 @@ package com.banquito.core.prestamos.modelo;
 
 import com.banquito.core.clientes.modelo.Clientes;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,22 +9,19 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "prestamos_clientes", schema = "public")
+@Table(name = "prestamos_clientes")
 public class PrestamosClientes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('prestamos_clientes_id_prestamo_cliente_seq')")
     @Column(name = "id_prestamo_cliente", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_cliente", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false)
     private Clientes idCliente;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_prestamo", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_prestamo", referencedColumnName = "id_prestamo", nullable = false)
     private Prestamos idPrestamo;
 
     @Column(name = "fecha_inicio", nullable = false)
@@ -71,6 +65,13 @@ public class PrestamosClientes {
 
     @OneToMany(mappedBy = "idPrestamoCliente")
     private Set<com.banquito.core.prestamos.modelo.SegurosPrestamoClientes> segurosPrestamoClientes = new LinkedHashSet<>();
+
+    public PrestamosClientes() {
+    }
+
+    public PrestamosClientes(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -196,7 +197,8 @@ public class PrestamosClientes {
         return garantiasTiposPrestamosClientes;
     }
 
-    public void setGarantiasTiposPrestamosClientes(Set<GarantiasTiposPrestamosClientes> garantiasTiposPrestamosClientes) {
+    public void setGarantiasTiposPrestamosClientes(
+            Set<GarantiasTiposPrestamosClientes> garantiasTiposPrestamosClientes) {
         this.garantiasTiposPrestamosClientes = garantiasTiposPrestamosClientes;
     }
 
@@ -204,8 +206,46 @@ public class PrestamosClientes {
         return segurosPrestamoClientes;
     }
 
-    public void setSegurosPrestamoClientes(Set<com.banquito.core.prestamos.modelo.SegurosPrestamoClientes> segurosPrestamoClientes) {
+    public void setSegurosPrestamoClientes(
+            Set<com.banquito.core.prestamos.modelo.SegurosPrestamoClientes> segurosPrestamoClientes) {
         this.segurosPrestamoClientes = segurosPrestamoClientes;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PrestamosClientes other = (PrestamosClientes) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "PrestamosClientes [id=" + id + ", idCliente=" + idCliente + ", idPrestamo=" + idPrestamo
+                + ", fechaInicio=" + fechaInicio + ", fechaAprobacion=" + fechaAprobacion + ", fechaDesembolso="
+                + fechaDesembolso + ", fechaVencimiento=" + fechaVencimiento + ", montoSolicitado=" + montoSolicitado
+                + ", plazoMeses=" + plazoMeses + ", tasaInteresAplicada=" + tasaInteresAplicada + ", saldoPendiente="
+                + saldoPendiente + ", estado=" + estado + ", version=" + version + ", comisionesPrestamoClientes="
+                + comisionesPrestamoClientes + ", cronogramasPagos=" + cronogramasPagos
+                + ", garantiasTiposPrestamosClientes=" + garantiasTiposPrestamosClientes + ", segurosPrestamoClientes="
+                + segurosPrestamoClientes + "]";
     }
 
 }
