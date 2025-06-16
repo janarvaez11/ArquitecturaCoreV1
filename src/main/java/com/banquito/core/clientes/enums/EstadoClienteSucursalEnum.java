@@ -1,14 +1,13 @@
-package com.banquito.core.clientes.modelo.enums;
+package com.banquito.core.clientes.enums;
 
-public enum EstadoClienteEnum {
+public enum EstadoClienteSucursalEnum {
     ACTIVO("ACTIVO"),
     INACTIVO("INACTIVO"),
-    SUSPENDIDO("SUSPENDIDO"),
-    BLOQUEADO("BLOQUEADO");
+    SUSPENDIDO("SUSPENDIDO");
 
     private final String valor;
 
-    EstadoClienteEnum(String valor) {
+    EstadoClienteSucursalEnum(String valor) {
         this.valor = valor;
     }
 

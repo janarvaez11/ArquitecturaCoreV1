@@ -1,10 +1,7 @@
 package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "exenciones_cuentas", schema = "public")

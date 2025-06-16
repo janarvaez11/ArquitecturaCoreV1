@@ -1,12 +1,12 @@
-package com.banquito.core.clientes.modelo.enums;
+package com.banquito.core.clientes.enums;
 
-public enum EstadoGeneralEnum {
+public enum EstadoGeneralClienteEnum {
     ACTIVO("ACTIVO"),
     INACTIVO("INACTIVO");
 
     private final String valor;
 
-    EstadoGeneralEnum(String valor) {
+    EstadoGeneralClienteEnum(String valor) {
         this.valor = valor;
     }
 

@@ -1,4 +1,4 @@
-package com.banquito.core.clientes.modelo.enums;
+package com.banquito.core.clientes.enums;
 
 public enum TipoDireccionEnum {
     DOMICILIO("DOMICILIO"),

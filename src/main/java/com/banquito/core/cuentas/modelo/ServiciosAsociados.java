@@ -2,7 +2,6 @@ package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

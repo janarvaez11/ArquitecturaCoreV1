@@ -1,8 +1,8 @@
 package com.banquito.core.cuentas.enums;
 
 public enum BaseCalculoTasaEnum {
-    _30_360("30/360"),
-    _31_365("31/365");
+    BASE_30_360("30/360"),
+    BASE_31_365("31/365");
 
     private final String valor;
 
