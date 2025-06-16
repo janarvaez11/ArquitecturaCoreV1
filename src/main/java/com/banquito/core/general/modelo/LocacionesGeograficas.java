@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Table(name = "locaciones_geograficas", schema = "public")
@@ -51,6 +52,13 @@ public class LocacionesGeograficas {
     @OneToMany(mappedBy = "idLocacion")
     private Set<com.banquito.core.general.modelo.Sucursales> sucursales = new LinkedHashSet<>();
 
+    public LocacionesGeograficas() {
+    }
+
+    public LocacionesGeograficas(Integer id) {
+        this.id = id;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -145,6 +153,37 @@ public class LocacionesGeograficas {
 
     public void setSucursales(Set<com.banquito.core.general.modelo.Sucursales> sucursales) {
         this.sucursales = sucursales;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        LocacionesGeograficas other = (LocacionesGeograficas) obj;
+        return Objects.equals(this.id, other.id);
+    }
+
+    @Override
+    public String toString() {
+        return "LocacionesGeograficas [id=" + id +
+               ", idLocacionPadre=" + (idLocacionPadre != null ? idLocacionPadre.getId() : null) +
+               ", estructurasGeograficas=" + (estructurasGeograficas != null ? estructurasGeograficas.getId() : null) +
+               ", nombre=" + nombre +
+               ", codigoTelefonoArea=" + codigoTelefonoArea +
+               ", codigoGeografico=" + codigoGeografico +
+               ", codigoPostal=" + codigoPostal +
+               ", estado=" + estado +
+               ", version=" + version + "]";
     }
 
 }

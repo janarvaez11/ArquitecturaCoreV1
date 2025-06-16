@@ -5,6 +5,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "sucursales", schema = "public")
@@ -53,6 +54,13 @@ public class Sucursales {
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
 
+    public Sucursales() {
+    }
+
+    public Sucursales(String codigo) {
+        this.codigo = codigo;
+    }
+    
     public String getCodigo() {
         return codigo;
     }
@@ -155,6 +163,36 @@ public class Sucursales {
 
     public void setVersion(BigDecimal version) {
         this.version = version;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codigo);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Sucursales other = (Sucursales) obj;
+        return Objects.equals(codigo, other.codigo);
+    }
+
+    @Override
+    public String toString() {
+        return "Sucursales [codigo=" + codigo +
+                ", idEntidadBancaria=" + (idEntidadBancaria != null ? idEntidadBancaria.getId() : null) +
+                ", idLocacion=" + (idLocacion != null ? idLocacion.getId() : null) +
+                ", nombre=" + nombre +
+                ", fechaCreacion=" + fechaCreacion +
+                ", correoElectronico=" + correoElectronico +
+                ", telefono=" + telefono +
+                ", direccionLinea1=" + direccionLinea1 +
+                ", direccionLinea2=" + direccionLinea2 +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
+                ", estado=" + estado +
+                ", version=" + version + "]";
     }
 
 }

@@ -32,6 +32,13 @@ public class EstructurasGeografica {
     @OneToMany
     private Set<com.banquito.core.general.modelo.LocacionesGeograficas> locacionesGeograficas = new LinkedHashSet<>();
 
+    public EstructurasGeografica() {
+    }
+
+    public EstructurasGeografica(EstructurasGeograficaId id) {
+        this.id = id;
+    }
+    
     public EstructurasGeograficaId getId() {
         return id;
     }
@@ -80,4 +87,40 @@ public class EstructurasGeografica {
         this.locacionesGeograficas = locacionesGeograficas;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        EstructurasGeografica other = (EstructurasGeografica) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", idPais='" + getIdPais() + "'" +
+            ", nombre='" + getNombre() + "'" +
+            ", estado='" + getEstado() + "'" +
+            ", version='" + getVersion() + "'" +
+            ", locacionesGeograficas='" + getLocacionesGeograficas() + "'" +
+            "}";
+    }
 }

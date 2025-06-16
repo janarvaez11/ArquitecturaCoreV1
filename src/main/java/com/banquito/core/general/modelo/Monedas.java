@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Table(name = "monedas", schema = "public")
@@ -35,6 +36,14 @@ public class Monedas {
     @OneToMany(mappedBy = "idMoneda")
     private Set<EntidadesBancariasMonedas> entidadesBancariasMonedas = new LinkedHashSet<>();
 
+    public Monedas() {
+    }
+
+    public Monedas(String idMoneda) {
+        this.idMoneda = idMoneda;
+
+    }
+   
     public String getIdMoneda() {
         return idMoneda;
     }
@@ -89,6 +98,38 @@ public class Monedas {
 
     public void setEntidadesBancariasMonedas(Set<EntidadesBancariasMonedas> entidadesBancariasMonedas) {
         this.entidadesBancariasMonedas = entidadesBancariasMonedas;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((idMoneda == null) ? 0 : idMoneda.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Monedas other = (Monedas) obj;
+        return Objects.equals(this.idMoneda, other.idMoneda);
+    }
+
+
+    @Override
+    public String toString() {
+        return "{" +
+            " idMoneda='" + getIdMoneda() + "'" +
+            ", idPais='" + getIdPais() + "'" +
+            ", nombre='" + getNombre() + "'" +
+            ", simbolo='" + getSimbolo() + "'" +
+            ", estado='" + getEstado() + "'" +
+            ", version='" + getVersion() + "'" +
+            ", entidadesBancariasMonedas='" + getEntidadesBancariasMonedas() + "'" +
+            "}";
     }
 
 }

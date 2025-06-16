@@ -16,6 +16,13 @@ public class EstructurasGeograficaId implements java.io.Serializable {
     @Column(name = "codigo_nivel", nullable = false, precision = 1)
     private BigDecimal codigoNivel;
 
+    public EstructurasGeograficaId() {
+    }
+
+    public EstructurasGeograficaId(String idPais) {
+        this.idPais = idPais;
+    }
+    
     public String getIdPais() {
         return idPais;
     }
@@ -33,6 +40,11 @@ public class EstructurasGeograficaId implements java.io.Serializable {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(idPais, codigoNivel);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
@@ -42,8 +54,7 @@ public class EstructurasGeograficaId implements java.io.Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(codigoNivel, idPais);
+    public String toString() {
+        return "EstructurasGeograficaId [idPais=" + idPais + ", codigoNivel=" + codigoNivel + "]";
     }
-
 }

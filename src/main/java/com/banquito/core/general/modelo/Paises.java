@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Table(name = "paises", schema = "public")
@@ -36,6 +37,13 @@ public class Paises {
     @OneToMany(mappedBy = "idPais")
     private Set<Monedas> monedas = new LinkedHashSet<>();
 
+    public Paises() {
+    }
+
+    public Paises(String idPais) {
+        this.idPais = idPais;
+    }
+    
     public String getIdPais() {
         return idPais;
     }
@@ -98,6 +106,30 @@ public class Paises {
 
     public void setMonedas(Set<Monedas> monedas) {
         this.monedas = monedas;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idPais);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Paises other = (Paises) obj;
+        return Objects.equals(this.idPais, other.idPais);
+    }
+
+    @Override
+    public String toString() {
+        return "Paises [idPais=" + idPais +
+               ", nombre=" + nombre +
+               ", codigoTelefono=" + codigoTelefono +
+               ", estado=" + estado +
+               ", version=" + version + "]";
     }
 
 }
