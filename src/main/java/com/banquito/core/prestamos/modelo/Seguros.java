@@ -1,7 +1,6 @@
 package com.banquito.core.prestamos.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,11 +8,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "seguros", schema = "public")
+@Table(name = "seguros")
 public class Seguros {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('seguros_id_seguro_seq')")
     @Column(name = "id_seguro", nullable = false)
     private Integer id;
 
@@ -32,7 +30,6 @@ public class Seguros {
     @Column(name = "fecha_fin", nullable = false)
     private LocalDate fechaFin;
 
-    @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
@@ -41,6 +38,13 @@ public class Seguros {
 
     @OneToMany(mappedBy = "idSeguro")
     private Set<com.banquito.core.prestamos.modelo.SegurosPrestamos> segurosPrestamos = new LinkedHashSet<>();
+
+    public Seguros() {
+    }
+
+    public Seguros(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -112,6 +116,38 @@ public class Seguros {
 
     public void setSegurosPrestamos(Set<com.banquito.core.prestamos.modelo.SegurosPrestamos> segurosPrestamos) {
         this.segurosPrestamos = segurosPrestamos;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Seguros other = (Seguros) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Seguros [id=" + id + ", tipoSeguro=" + tipoSeguro + ", compania=" + compania + ", montoAsegurado="
+                + montoAsegurado + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", estado=" + estado
+                + ", version=" + version + ", segurosPrestamos=" + segurosPrestamos + "]";
     }
 
 }

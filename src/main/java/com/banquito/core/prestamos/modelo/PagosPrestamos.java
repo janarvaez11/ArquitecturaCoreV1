@@ -1,24 +1,19 @@
 package com.banquito.core.prestamos.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "pagos_prestamos", schema = "public")
+@Table(name = "pagos_prestamos")
 public class PagosPrestamos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('pagos_prestamos_id_pago_seq')")
     @Column(name = "id_pago", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne
     @JoinColumn(name = "id_cuota", nullable = false)
     private CronogramasPagos idCuota;
 
@@ -31,7 +26,6 @@ public class PagosPrestamos {
     @Column(name = "interes_pagado", nullable = false, precision = 15, scale = 2)
     private BigDecimal interesPagado;
 
-    @ColumnDefault("0")
     @Column(name = "mora_pagada", nullable = false, precision = 15, scale = 2)
     private BigDecimal moraPagada;
 
@@ -44,12 +38,18 @@ public class PagosPrestamos {
     @Column(name = "referencia", nullable = false, length = 100)
     private String referencia;
 
-    @ColumnDefault("'COMPLETADO'")
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
+
+    public PagosPrestamos() {
+    }
+
+    public PagosPrestamos(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -137,6 +137,39 @@ public class PagosPrestamos {
 
     public void setVersion(BigDecimal version) {
         this.version = version;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PagosPrestamos other = (PagosPrestamos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "PagosPrestamos [id=" + id + ", idCuota=" + idCuota + ", fechaPago=" + fechaPago + ", montoPagado="
+                + montoPagado + ", interesPagado=" + interesPagado + ", moraPagada=" + moraPagada + ", capitalPagado="
+                + capitalPagado + ", tipoPago=" + tipoPago + ", referencia=" + referencia + ", estado=" + estado
+                + ", version=" + version + "]";
     }
 
 }

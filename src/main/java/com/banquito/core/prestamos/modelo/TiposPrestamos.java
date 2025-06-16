@@ -2,9 +2,6 @@ package com.banquito.core.prestamos.modelo;
 
 import com.banquito.core.general.modelo.Monedas;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -12,16 +9,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tipos_prestamos", schema = "public")
+@Table(name = "tipos_prestamos")
 public class TiposPrestamos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('tipos_prestamos_id_tipo_prestamo_seq')")
     @Column(name = "id_tipo_prestamo", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne
     @JoinColumn(name = "id_moneda", nullable = false)
     private Monedas idMoneda;
 
@@ -37,15 +32,12 @@ public class TiposPrestamos {
     @Column(name = "tipo_cliente", nullable = false, length = 15)
     private String tipoCliente;
 
-    @ColumnDefault("CURRENT_DATE")
     @Column(name = "fecha_creacion", nullable = false)
     private Instant fechaCreacion;
 
-    @ColumnDefault("CURRENT_DATE")
     @Column(name = "fecha_modificacion", nullable = false)
     private Instant fechaModificacion;
 
-    @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
@@ -60,6 +52,13 @@ public class TiposPrestamos {
 
     @OneToMany(mappedBy = "idTipoPrestamo")
     private Set<Prestamos> prestamos = new LinkedHashSet<>();
+
+    public TiposPrestamos() {
+    }
+
+    public TiposPrestamos(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -163,6 +162,40 @@ public class TiposPrestamos {
 
     public void setPrestamos(Set<Prestamos> prestamos) {
         this.prestamos = prestamos;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TiposPrestamos other = (TiposPrestamos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "TiposPrestamos [id=" + id + ", idMoneda=" + idMoneda + ", nombre=" + nombre + ", descripcion="
+                + descripcion + ", requisitos=" + requisitos + ", tipoCliente=" + tipoCliente + ", fechaCreacion="
+                + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", estado=" + estado + ", version="
+                + version + ", esquemasAmortizacions=" + esquemasAmortizacions + ", garantiasTiposPrestamos="
+                + garantiasTiposPrestamos + ", prestamos=" + prestamos + "]";
     }
 
 }
