@@ -15,14 +15,12 @@ public class ServiciosAsociadosCuentas {
     @Column(name = "id_servicio_asociado_cuenta", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_servicio", nullable = false)
     private ServiciosAsociados idServicio;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cuenta", nullable = false)
     private Cuentas idCuenta;
 
     @Column(name = "fecha_asignacion", nullable = false)

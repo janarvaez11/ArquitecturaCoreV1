@@ -17,15 +17,13 @@ public class Cuentas {
     @Column(name = "id_cuenta", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_tipo_cuenta", referencedColumnName = "id_tipo_cuenta", nullable = false)
-    private com.banquito.core.cuentas.modelo.TiposCuentas idTipoCuenta;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipo_cuenta", nullable = false)
+    private TiposCuentas idTipoCuenta;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_tasa_interes", referencedColumnName = "id_tasa_interes", nullable = false)
-    private com.banquito.core.cuentas.modelo.TasasIntereses idTasaInteres;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tasa_interes", nullable = false)
+    private TasasIntereses idTasaInteres;
 
     @Column(name = "codigo_cuenta", nullable = false, length = 20)
     private String codigoCuenta;
@@ -72,19 +70,19 @@ public class Cuentas {
         this.id = id;
     }
 
-    public com.banquito.core.cuentas.modelo.TiposCuentas getIdTipoCuenta() {
+    public TiposCuentas getIdTipoCuenta() {
         return idTipoCuenta;
     }
 
-    public void setIdTipoCuenta(com.banquito.core.cuentas.modelo.TiposCuentas idTipoCuenta) {
+    public void setIdTipoCuenta(TiposCuentas idTipoCuenta) {
         this.idTipoCuenta = idTipoCuenta;
     }
 
-    public com.banquito.core.cuentas.modelo.TasasIntereses getIdTasaInteres() {
+    public TasasIntereses getIdTasaInteres() {
         return idTasaInteres;
     }
 
-    public void setIdTasaInteres(com.banquito.core.cuentas.modelo.TasasIntereses idTasaInteres) {
+    public void setIdTasaInteres(TasasIntereses idTasaInteres) {
         this.idTasaInteres = idTasaInteres;
     }
 

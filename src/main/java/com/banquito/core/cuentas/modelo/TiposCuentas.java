@@ -18,14 +18,12 @@ public class TiposCuentas {
     @Column(name = "id_tipo_cuenta", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_moneda", referencedColumnName = "id_moneda", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_moneda", nullable = false)
     private Monedas idMoneda;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_tasa_interes_por_defecto", referencedColumnName = "id_tasa_interes", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tasa_interes_por_defecto", nullable = false)
     private TasasIntereses idTasaInteresPorDefecto;
 
     @Column(name = "nombre", nullable = false, length = 100)

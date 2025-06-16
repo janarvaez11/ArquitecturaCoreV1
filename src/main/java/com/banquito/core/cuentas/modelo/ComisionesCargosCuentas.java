@@ -15,14 +15,12 @@ public class ComisionesCargosCuentas {
     @Column(name = "id_comision_cargo_cuenta", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false)
-    private com.banquito.core.cuentas.modelo.Cuentas idCuenta;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cuenta", nullable = false)
+    private Cuentas idCuenta;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_comision_cargo", referencedColumnName = "id_comision_cargo", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_comision_cargo", nullable = false)
     private ComisionesCargos idComisionCargo;
 
     @Column(name = "fecha_asignacion", nullable = false)
@@ -49,11 +47,11 @@ public class ComisionesCargosCuentas {
         this.id = id;
     }
 
-    public com.banquito.core.cuentas.modelo.Cuentas getIdCuenta() {
+    public Cuentas getIdCuenta() {
         return idCuenta;
     }
 
-    public void setIdCuenta(com.banquito.core.cuentas.modelo.Cuentas idCuenta) {
+    public void setIdCuenta(Cuentas idCuenta) {
         this.idCuenta = idCuenta;
     }
 

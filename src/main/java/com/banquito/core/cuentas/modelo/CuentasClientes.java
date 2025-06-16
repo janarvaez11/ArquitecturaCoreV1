@@ -14,12 +14,12 @@ public class CuentasClientes {
     @Column(name = "id_cuenta_cliente", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cuenta", nullable = false)
     private Cuentas idCuenta;
 
-    @ManyToOne
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente", nullable = false)
     private Clientes idCliente;
 
     @Column(name = "numero_cuenta", nullable = false, length = 10)

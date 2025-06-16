@@ -14,9 +14,8 @@ public class TasasSaldos {
     @Column(name = "id_saldo", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_tasa_interes", referencedColumnName = "id_tasa_interes", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tasa_interes", nullable = false)
     private TasasIntereses idTasaInteres;
 
     @Column(name = "saldo_minimo", nullable = false, precision = 15, scale = 2)

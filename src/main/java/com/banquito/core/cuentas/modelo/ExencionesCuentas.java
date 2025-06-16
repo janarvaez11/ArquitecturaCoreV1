@@ -14,9 +14,8 @@ public class ExencionesCuentas {
     @Column(name = "id_exencion", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_comision", referencedColumnName = "id_comision_cargo", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_comision", nullable = false)
     private ComisionesCargos idComision;
 
     @Column(name = "nombre", nullable = false, length = 100)

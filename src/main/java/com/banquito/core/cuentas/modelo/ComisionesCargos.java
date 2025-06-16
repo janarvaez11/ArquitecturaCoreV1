@@ -19,10 +19,9 @@ public class ComisionesCargos {
     @Column(name = "tipo_comision", nullable = false, length = 25)
     private String tipoComision;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio", nullable = false)
-    private com.banquito.core.cuentas.modelo.ServiciosAsociados idServicio;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_servicio", nullable = false)
+    private ServiciosAsociados idServicio;
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
