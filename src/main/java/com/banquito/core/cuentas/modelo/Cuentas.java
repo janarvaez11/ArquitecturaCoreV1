@@ -1,7 +1,6 @@
 package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,19 +14,16 @@ import java.util.Set;
 public class Cuentas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('cuentas_id_cuenta_seq')")
     @Column(name = "id_cuenta", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_cuenta", nullable = false)
-    private com.banquito.core.cuentas.modelo.TiposCuentas idTipoCuenta;
+    private TiposCuentas idTipoCuenta;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tasa_interes", nullable = false)
-    private com.banquito.core.cuentas.modelo.TasasIntereses idTasaInteres;
+    private TasasIntereses idTasaInteres;
 
     @Column(name = "codigo_cuenta", nullable = false, length = 20)
     private String codigoCuenta;
@@ -47,8 +43,9 @@ public class Cuentas {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
     @OneToMany(mappedBy = "idCuenta")
     private Set<ComisionesCargosCuentas> comisionesCargosCuentas = new LinkedHashSet<>();
@@ -59,6 +56,12 @@ public class Cuentas {
     @OneToMany(mappedBy = "idCuenta")
     private Set<com.banquito.core.cuentas.modelo.ServiciosAsociadosCuentas> serviciosAsociadosCuentas = new LinkedHashSet<>();
 
+    public Cuentas() {}
+
+    public Cuentas(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -67,19 +70,19 @@ public class Cuentas {
         this.id = id;
     }
 
-    public com.banquito.core.cuentas.modelo.TiposCuentas getIdTipoCuenta() {
+    public TiposCuentas getIdTipoCuenta() {
         return idTipoCuenta;
     }
 
-    public void setIdTipoCuenta(com.banquito.core.cuentas.modelo.TiposCuentas idTipoCuenta) {
+    public void setIdTipoCuenta(TiposCuentas idTipoCuenta) {
         this.idTipoCuenta = idTipoCuenta;
     }
 
-    public com.banquito.core.cuentas.modelo.TasasIntereses getIdTasaInteres() {
+    public TasasIntereses getIdTasaInteres() {
         return idTasaInteres;
     }
 
-    public void setIdTasaInteres(com.banquito.core.cuentas.modelo.TasasIntereses idTasaInteres) {
+    public void setIdTasaInteres(TasasIntereses idTasaInteres) {
         this.idTasaInteres = idTasaInteres;
     }
 
@@ -131,11 +134,11 @@ public class Cuentas {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -161,6 +164,36 @@ public class Cuentas {
 
     public void setServiciosAsociadosCuentas(Set<com.banquito.core.cuentas.modelo.ServiciosAsociadosCuentas> serviciosAsociadosCuentas) {
         this.serviciosAsociadosCuentas = serviciosAsociadosCuentas;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Cuentas other = (Cuentas) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Cuentas [id=" + id + ", idTipoCuenta=" + idTipoCuenta + ", idTasaInteres=" + idTasaInteres + ", codigoCuenta=" + codigoCuenta + ", nombre=" + nombre + ", descripcion=" + descripcion + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }

@@ -14,9 +14,8 @@ public class TasasSaldos {
     @Column(name = "id_saldo", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_tasa_interes", referencedColumnName = "id_tasa_interes", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tasa_interes", nullable = false)
     private TasasIntereses idTasaInteres;
 
     @Column(name = "saldo_minimo", nullable = false, precision = 15, scale = 2)
@@ -31,8 +30,15 @@ public class TasasSaldos {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
+
+    public TasasSaldos() {}
+
+    public TasasSaldos(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -82,12 +88,42 @@ public class TasasSaldos {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TasasSaldos other = (TasasSaldos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "TasasSaldos [id=" + id + ", idTasaInteres=" + idTasaInteres + ", saldoMinimo=" + saldoMinimo + ", saldoMaximo=" + saldoMaximo + ", tasa=" + tasa + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }

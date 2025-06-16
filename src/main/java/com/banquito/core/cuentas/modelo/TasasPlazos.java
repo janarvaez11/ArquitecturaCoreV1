@@ -2,7 +2,6 @@ package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
 
-
 import java.math.BigDecimal;
 
 @Entity
@@ -13,8 +12,8 @@ public class TasasPlazos {
     @Column(name = "id_plazo", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tasa_interes", referencedColumnName = "id_tasa_interes", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tasa_interes", nullable = false)
     private TasasIntereses idTasaInteres;
 
     @Column(name = "plazo_minimo", nullable = false, precision = 15, scale = 2)
@@ -29,8 +28,9 @@ public class TasasPlazos {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
     public TasasPlazos() {
     }
@@ -87,11 +87,11 @@ public class TasasPlazos {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -122,9 +122,7 @@ public class TasasPlazos {
 
     @Override
     public String toString() {
-        return "TasasPlazos [id=" + id + ", idTasaInteres=" + idTasaInteres + ", plazoMinimo=" + plazoMinimo
-                + ", plazoMaximo=" + plazoMaximo + ", tasa=" + tasa + ", estado=" + estado + ", version=" + version
-                + "]";
+        return "TasasPlazos [id=" + id + ", idTasaInteres=" + idTasaInteres + ", plazoMinimo=" + plazoMinimo + ", plazoMaximo=" + plazoMaximo + ", tasa=" + tasa + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }

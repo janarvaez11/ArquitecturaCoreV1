@@ -18,13 +18,11 @@ public class TiposCuentas {
     @Column(name = "id_tipo_cuenta", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_moneda", nullable = false)
     private Monedas idMoneda;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tasa_interes_por_defecto", nullable = false)
     private TasasIntereses idTasaInteresPorDefecto;
 
@@ -49,8 +47,9 @@ public class TiposCuentas {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
     @OneToMany(mappedBy = "idTipoCuenta")
     private Set<Cuentas> cuentas = new LinkedHashSet<>();
@@ -135,11 +134,11 @@ public class TiposCuentas {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -149,6 +148,36 @@ public class TiposCuentas {
 
     public void setCuentas(Set<Cuentas> cuentas) {
         this.cuentas = cuentas;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TiposCuentas other = (TiposCuentas) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "TiposCuentas [id=" + id + ", idMoneda=" + idMoneda + ", idTasaInteresPorDefecto=" + idTasaInteresPorDefecto + ", nombre=" + nombre + ", descripcion=" + descripcion + ", requisitosApertura=" + requisitosApertura + ", tipoCliente=" + tipoCliente + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }
