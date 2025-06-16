@@ -17,14 +17,14 @@ public class ClientesSucursales {
     private Integer idClienteFk;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "id_cliente", nullable = false, insertable = false, updatable = false)
     private Clientes idCliente;
 
     @Column(name = "codigo_sucursal", nullable = false)
     private String codigoSucursalFk;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "codigo_sucursal", referencedColumnName = "codigo_sucursal", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "codigo_sucursal", nullable = false, insertable = false, updatable = false)
     private Sucursales codigoSucursal;
 
     @Column(name = "estado", nullable = false, length = 15)

@@ -21,7 +21,7 @@ public class ContactosTransaccionalesClientes {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "id_cliente", nullable = false, insertable = false, updatable = false)
     private Clientes idCliente;
 
     @Column(name = "telefono", nullable = false, length = 10)

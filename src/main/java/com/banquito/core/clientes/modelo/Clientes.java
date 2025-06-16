@@ -25,7 +25,7 @@ public class Clientes {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_entidad", referencedColumnName = "id_empresa", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "id_entidad", nullable = false, insertable = false, updatable = false)
     private Empresas idEntidad;
 
     @Column(name = "nombre", nullable = false, length = 50)
@@ -36,7 +36,7 @@ public class Clientes {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "nacionalidad", referencedColumnName = "codigo_pais", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "nacionalidad", nullable = false, insertable = false, updatable = false)
     private Paises nacionalidad;
 
     @Column(name = "tipo_identificacion", nullable = false, length = 10)
