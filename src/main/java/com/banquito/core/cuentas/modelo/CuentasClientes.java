@@ -37,8 +37,9 @@ public class CuentasClientes {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
     public CuentasClientes() {
     }
@@ -111,11 +112,11 @@ public class CuentasClientes {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -146,9 +147,7 @@ public class CuentasClientes {
 
     @Override
     public String toString() {
-        return "CuentasClientes [id=" + id + ", idCuenta=" + idCuenta + ", idCliente=" + idCliente + ", numeroCuenta="
-                + numeroCuenta + ", saldoDisponible=" + saldoDisponible + ", saldoContable=" + saldoContable
-                + ", fechaApertura=" + fechaApertura + ", estado=" + estado + ", version=" + version + "]";
+        return "CuentasClientes [id=" + id + ", idCuenta=" + idCuenta + ", idCliente=" + idCliente + ", numeroCuenta=" + numeroCuenta + ", saldoDisponible=" + saldoDisponible + ", saldoContable=" + saldoContable + ", fechaApertura=" + fechaApertura + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }

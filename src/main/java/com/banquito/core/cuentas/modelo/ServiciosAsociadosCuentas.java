@@ -1,7 +1,6 @@
 package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,18 +12,17 @@ import java.time.Instant;
 public class ServiciosAsociadosCuentas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('servicios_asociados_cuentas_id_servicio_asociado_cuenta_seq')")
     @Column(name = "id_servicio_asociado_cuenta", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_servicio", nullable = false)
+    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio", nullable = false)
     private ServiciosAsociados idServicio;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_cuenta", nullable = false)
+    @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false)
     private Cuentas idCuenta;
 
     @Column(name = "fecha_asignacion", nullable = false)
@@ -33,8 +31,15 @@ public class ServiciosAsociadosCuentas {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
+
+    public ServiciosAsociadosCuentas() {}
+
+    public ServiciosAsociadosCuentas(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -76,12 +81,42 @@ public class ServiciosAsociadosCuentas {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ServiciosAsociadosCuentas other = (ServiciosAsociadosCuentas) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiciosAsociadosCuentas [id=" + id + ", idServicio=" + idServicio + ", idCuenta=" + idCuenta + ", fechaAsignacion=" + fechaAsignacion + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }

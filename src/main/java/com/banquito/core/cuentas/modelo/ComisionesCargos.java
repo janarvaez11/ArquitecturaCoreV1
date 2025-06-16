@@ -1,7 +1,6 @@
 package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,7 +13,6 @@ import java.util.Set;
 public class ComisionesCargos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('comisiones_cargos_id_comision_cargo_seq')")
     @Column(name = "id_comision_cargo", nullable = false)
     private Integer id;
 
@@ -23,7 +21,7 @@ public class ComisionesCargos {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "id_servicio", nullable = false)
+    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio", nullable = false)
     private com.banquito.core.cuentas.modelo.ServiciosAsociados idServicio;
 
     @Column(name = "nombre", nullable = false, length = 100)
@@ -41,14 +39,21 @@ public class ComisionesCargos {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
     @OneToMany(mappedBy = "idComisionCargo")
     private Set<com.banquito.core.cuentas.modelo.ComisionesCargosCuentas> comisionesCargosCuentas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idComision")
     private Set<com.banquito.core.cuentas.modelo.ExencionesCuentas> exencionesCuentas = new LinkedHashSet<>();
+
+    public ComisionesCargos() {}
+
+    public ComisionesCargos(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -114,11 +119,11 @@ public class ComisionesCargos {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -136,6 +141,36 @@ public class ComisionesCargos {
 
     public void setExencionesCuentas(Set<com.banquito.core.cuentas.modelo.ExencionesCuentas> exencionesCuentas) {
         this.exencionesCuentas = exencionesCuentas;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ComisionesCargos other = (ComisionesCargos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ComisionesCargos [id=" + id + ", tipoComision=" + tipoComision + ", idServicio=" + idServicio + ", nombre=" + nombre + ", baseCalculo=" + baseCalculo + ", monto=" + monto + ", frecuencia=" + frecuencia + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }

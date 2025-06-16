@@ -1,7 +1,6 @@
 package com.banquito.core.cuentas.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,7 +12,6 @@ import java.util.Set;
 public class TasasIntereses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('tasas_intereses_id_tasa_interes_seq')")
     @Column(name = "id_tasa_interes", nullable = false)
     private Integer id;
 
@@ -35,8 +33,9 @@ public class TasasIntereses {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
 
     @OneToMany(mappedBy = "idTasaInteres")
     private Set<Cuentas> cuentas = new LinkedHashSet<>();
@@ -49,6 +48,12 @@ public class TasasIntereses {
 
     @OneToMany(mappedBy = "idTasaInteresPorDefecto")
     private Set<com.banquito.core.cuentas.modelo.TiposCuentas> tiposCuentas = new LinkedHashSet<>();
+
+    public TasasIntereses() {}
+
+    public TasasIntereses(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -106,11 +111,11 @@ public class TasasIntereses {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -144,6 +149,36 @@ public class TasasIntereses {
 
     public void setTiposCuentas(Set<com.banquito.core.cuentas.modelo.TiposCuentas> tiposCuentas) {
         this.tiposCuentas = tiposCuentas;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TasasIntereses other = (TasasIntereses) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "TasasIntereses [id=" + id + ", baseCalculo=" + baseCalculo + ", metodoCalculo=" + metodoCalculo + ", frecuenciaCapitalizacion=" + frecuenciaCapitalizacion + ", fechaInicioVigencia=" + fechaInicioVigencia + ", fechaFinVigencia=" + fechaFinVigencia + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }
