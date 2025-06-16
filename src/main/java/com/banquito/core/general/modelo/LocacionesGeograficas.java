@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -52,6 +53,13 @@ public class LocacionesGeograficas {
 
     @OneToMany(mappedBy = "idLocacion")
     private Set<com.banquito.core.general.modelo.Sucursales> sucursales = new LinkedHashSet<>();
+
+    public LocacionesGeograficas() {
+    }
+
+    public LocacionesGeograficas(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -149,4 +157,33 @@ public class LocacionesGeograficas {
         this.sucursales = sucursales;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        LocacionesGeograficas that = (LocacionesGeograficas) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "LocacionesGeograficas{" +
+                "id=" + id +
+                ", idLocacionPadre=" + idLocacionPadre +
+                ", estructurasGeograficas=" + estructurasGeograficas +
+                ", nombre='" + nombre + '\'' +
+                ", codigoTelefonoArea='" + codigoTelefonoArea + '\'' +
+                ", codigoGeografico='" + codigoGeografico + '\'' +
+                ", codigoPostal='" + codigoPostal + '\'' +
+                ", estado=" + estado +
+                ", version=" + version +
+                ", feriados=" + feriados +
+                ", locacionesGeograficas=" + locacionesGeograficas +
+                ", sucursales=" + sucursales +
+                '}';
+    }
 }

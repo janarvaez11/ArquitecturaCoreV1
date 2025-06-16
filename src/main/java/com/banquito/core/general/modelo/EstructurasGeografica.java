@@ -1,11 +1,12 @@
 package com.banquito.core.general.modelo;
 
-import com.banquito.core.general.enums.EstadoEstructurasGeograficasEnum;
+import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,7 @@ public class EstructurasGeografica {
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
-    private EstadoEstructurasGeograficasEnum estado = EstadoEstructurasGeograficasEnum.ACTIVO;
+    private EstadoGeneralEnum estado = EstadoGeneralEnum.ACTIVO;
 
     @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
@@ -33,6 +34,14 @@ public class EstructurasGeografica {
 
     @OneToMany
     private Set<com.banquito.core.general.modelo.LocacionesGeograficas> locacionesGeograficas = new LinkedHashSet<>();
+
+
+    public EstructurasGeografica() {
+    }
+
+    public EstructurasGeografica(EstructurasGeograficaId id) {
+        this.id = id;
+    }
 
     public EstructurasGeograficaId getId() {
         return id;
@@ -58,11 +67,11 @@ public class EstructurasGeografica {
         this.nombre = nombre;
     }
 
-    public EstadoEstructurasGeograficasEnum getEstado() {
+    public EstadoGeneralEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoEstructurasGeograficasEnum estado) {
+    public void setEstado(EstadoGeneralEnum estado) {
         this.estado = estado;
     }
 
@@ -82,4 +91,16 @@ public class EstructurasGeografica {
         this.locacionesGeograficas = locacionesGeograficas;
     }
 
+
+    @Override
+    public String toString() {
+        return "EstructurasGeografica{" +
+                "id=" + id +
+                ", idPais=" + idPais +
+                ", nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                ", version=" + version +
+                ", locacionesGeograficas=" + locacionesGeograficas +
+                '}';
+    }
 }

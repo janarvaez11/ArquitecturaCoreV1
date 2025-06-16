@@ -1,13 +1,13 @@
 package com.banquito.core.general.enums;
 
-public enum EstadoEstructurasGeograficasEnum {
+public enum EstadoGeneralEnum {
 
     ACTIVO("ACTIVO"),
     INACTIVO("INACTIVO");
 
     private final String valor;
 
-    EstadoEstructurasGeograficasEnum(String valor) {
+    EstadoGeneralEnum(String valor) {
         this.valor = valor;
     }
 
