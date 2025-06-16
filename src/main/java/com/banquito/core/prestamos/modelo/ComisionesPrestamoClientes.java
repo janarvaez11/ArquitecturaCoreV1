@@ -14,11 +14,11 @@ public class ComisionesPrestamoClientes {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_prestamo_cliente", referencedColumnName = "id_prestamo_cliente", nullable = false)
+    @JoinColumn(name = "id_prestamo_cliente", nullable = false)
     private com.banquito.core.prestamos.modelo.PrestamosClientes idPrestamoCliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_comision_prestamo", referencedColumnName = "id_comision_prestamo", nullable = false)
+    @JoinColumn(name = "id_comision_prestamo", nullable = false)
     private com.banquito.core.prestamos.modelo.ComisionesPrestamos idComisionPrestamo;
 
     @Column(name = "fecha_aplicacion", nullable = false)

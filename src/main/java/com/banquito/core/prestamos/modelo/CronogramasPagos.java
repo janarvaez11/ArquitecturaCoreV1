@@ -16,7 +16,7 @@ public class CronogramasPagos {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_prestamo_cliente", referencedColumnName = "id_prestamo_cliente", nullable = false)
+    @JoinColumn(name = "id_prestamo_cliente", nullable = false)
     private com.banquito.core.prestamos.modelo.PrestamosClientes idPrestamoCliente;
 
     @Column(name = "numero_cuota", nullable = false)

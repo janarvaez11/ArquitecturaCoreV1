@@ -17,7 +17,7 @@ public class TiposPrestamos {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_moneda", referencedColumnName = "id_moneda", nullable = false)
+    @JoinColumn(name = "id_moneda", nullable = false)
     private Monedas idMoneda;
 
     @Column(name = "nombre", nullable = false, length = 50)

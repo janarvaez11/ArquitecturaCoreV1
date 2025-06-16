@@ -15,11 +15,11 @@ public class GarantiasTiposPrestamos {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_garantia", referencedColumnName = "id_garantia", nullable = false)
+    @JoinColumn(name = "id_garantia", nullable = false)
     private Garantias idGarantia;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo_prestamo", referencedColumnName = "id_tipo_prestamo", nullable = false)
+    @JoinColumn(name = "id_tipo_prestamo", nullable = false)
     private com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo;
 
     @Column(name = "estado", nullable = false, length = 15)

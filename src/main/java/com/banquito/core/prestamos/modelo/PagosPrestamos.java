@@ -14,7 +14,7 @@ public class PagosPrestamos {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_cuota", referencedColumnName = "id_cuota", nullable = false)
+    @JoinColumn(name = "id_cuota", nullable = false)
     private CronogramasPagos idCuota;
 
     @Column(name = "fecha_pago", nullable = false)

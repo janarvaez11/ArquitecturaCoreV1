@@ -17,11 +17,11 @@ public class PrestamosClientes {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", nullable = false)
+    @JoinColumn(name = "id_cliente", nullable = false)
     private Clientes idCliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_prestamo", referencedColumnName = "id_prestamo", nullable = false)
+    @JoinColumn(name = "id_prestamo", nullable = false)
     private Prestamos idPrestamo;
 
     @Column(name = "fecha_inicio", nullable = false)

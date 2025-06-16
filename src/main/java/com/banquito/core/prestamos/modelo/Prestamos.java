@@ -16,11 +16,11 @@ public class Prestamos {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo_prestamo", referencedColumnName = "id_tipo_prestamo", nullable = false)
+    @JoinColumn(name = "id_tipo_prestamo", nullable = false)
     private com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo;
 
     @ManyToOne
-    @JoinColumn(name = "id_moneda", referencedColumnName = "id_moneda", nullable = false)
+    @JoinColumn(name = "id_moneda", nullable = false)
     private Monedas idMoneda;
 
     @Column(name = "nombre", nullable = false, length = 100)

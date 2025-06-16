@@ -13,7 +13,7 @@ public class EsquemasAmortizaciones {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo_prestamo", referencedColumnName = "id_tipo_prestamo")
+    @JoinColumn(name = "id_tipo_prestamo")
     private com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo;
 
     @Column(name = "nombre", nullable = false, length = 20)

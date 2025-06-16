@@ -15,11 +15,11 @@ public class SegurosPrestamos {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_seguro", referencedColumnName = "id_seguro", nullable = false)
+    @JoinColumn(name = "id_seguro", nullable = false)
     private Seguros idSeguro;
 
     @ManyToOne
-    @JoinColumn(name = "id_prestamo", referencedColumnName = "id_prestamo", nullable = false)
+    @JoinColumn(name = "id_prestamo", nullable = false)
     private Prestamos idPrestamo;
 
     @Column(name = "estado", nullable = false, length = 15)
