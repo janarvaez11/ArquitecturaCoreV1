@@ -2,15 +2,13 @@ package com.banquito.core.general.modelo;
 
 import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "paises", schema = "public")
+@Table(name = "paises")
 public class Paises {
     @Id
     @Column(name = "id_pais", nullable = false, length = 2)
@@ -26,12 +24,11 @@ public class Paises {
     @Column(name = "estado", nullable = false, length = 15)
     private EstadoGeneralEnum estado;
 
-    @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idPais")
-    private Set<EstructurasGeografica> estructurasGeograficas = new LinkedHashSet<>();
+    private Set<EstructurasGeograficas> estructurasGeograficas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idPais")
     private Set<Feriados> feriados = new LinkedHashSet<>();
@@ -78,19 +75,19 @@ public class Paises {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public Set<EstructurasGeografica> getEstructurasGeograficas() {
+    public Set<EstructurasGeograficas> getEstructurasGeograficas() {
         return estructurasGeograficas;
     }
 
-    public void setEstructurasGeograficas(Set<EstructurasGeografica> estructurasGeograficas) {
+    public void setEstructurasGeograficas(Set<EstructurasGeograficas> estructurasGeograficas) {
         this.estructurasGeograficas = estructurasGeograficas;
     }
 

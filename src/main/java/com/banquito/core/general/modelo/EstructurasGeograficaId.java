@@ -9,7 +9,6 @@ import java.util.Objects;
 
 @Embeddable
 public class EstructurasGeograficaId implements java.io.Serializable {
-    private static final long serialVersionUID = 8406983717900472111L;
     @Column(name = "id_pais", nullable = false, length = 2)
     private String idPais;
 

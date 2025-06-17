@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "cuentas", schema = "public")
+@Table(name = "cuentas")
 public class Cuentas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,10 +48,10 @@ public class Cuentas {
     private Set<ComisionesCargosCuentas> comisionesCargosCuentas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idCuenta")
-    private Set<com.banquito.core.cuentas.modelo.CuentasClientes> cuentasClientes = new LinkedHashSet<>();
+    private Set<CuentasClientes> cuentasClientes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idCuenta")
-    private Set<com.banquito.core.cuentas.modelo.ServiciosAsociadosCuentas> serviciosAsociadosCuentas = new LinkedHashSet<>();
+    private Set<ServiciosAsociadosCuentas> serviciosAsociadosCuentas = new LinkedHashSet<>();
 
     public Cuentas() {}
 
@@ -147,19 +147,19 @@ public class Cuentas {
         this.comisionesCargosCuentas = comisionesCargosCuentas;
     }
 
-    public Set<com.banquito.core.cuentas.modelo.CuentasClientes> getCuentasClientes() {
+    public Set<CuentasClientes> getCuentasClientes() {
         return cuentasClientes;
     }
 
-    public void setCuentasClientes(Set<com.banquito.core.cuentas.modelo.CuentasClientes> cuentasClientes) {
+    public void setCuentasClientes(Set<CuentasClientes> cuentasClientes) {
         this.cuentasClientes = cuentasClientes;
     }
 
-    public Set<com.banquito.core.cuentas.modelo.ServiciosAsociadosCuentas> getServiciosAsociadosCuentas() {
+    public Set<ServiciosAsociadosCuentas> getServiciosAsociadosCuentas() {
         return serviciosAsociadosCuentas;
     }
 
-    public void setServiciosAsociadosCuentas(Set<com.banquito.core.cuentas.modelo.ServiciosAsociadosCuentas> serviciosAsociadosCuentas) {
+    public void setServiciosAsociadosCuentas(Set<ServiciosAsociadosCuentas> serviciosAsociadosCuentas) {
         this.serviciosAsociadosCuentas = serviciosAsociadosCuentas;
     }
 

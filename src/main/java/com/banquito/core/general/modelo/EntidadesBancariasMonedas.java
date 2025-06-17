@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -24,14 +23,15 @@ public class EntidadesBancariasMonedas {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_moneda", nullable = false)
-    private com.banquito.core.general.modelo.Monedas idMoneda;
+    private Monedas idMoneda;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
     private EstadoGeneralEnum estado;
 
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     public EntidadesBancariasMonedas() {
     }
@@ -56,11 +56,11 @@ public class EntidadesBancariasMonedas {
         this.idEntidadBancaria = idEntidadBancaria;
     }
 
-    public com.banquito.core.general.modelo.Monedas getIdMoneda() {
+    public Monedas getIdMoneda() {
         return idMoneda;
     }
 
-    public void setIdMoneda(com.banquito.core.general.modelo.Monedas idMoneda) {
+    public void setIdMoneda(Monedas idMoneda) {
         this.idMoneda = idMoneda;
     }
 
@@ -72,11 +72,11 @@ public class EntidadesBancariasMonedas {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

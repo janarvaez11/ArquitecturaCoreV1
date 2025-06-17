@@ -4,21 +4,19 @@ import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "estructuras_geograficas", schema = "public")
-public class EstructurasGeografica {
+@Table(name = "estructuras_geograficas")
+public class EstructurasGeograficas {
     @EmbeddedId
     private EstructurasGeograficaId id;
 
     @MapsId("idPais")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_pais", nullable = false)
-    private com.banquito.core.general.modelo.Paises idPais;
+    private Paises idPais;
 
     @Column(name = "nombre", nullable = false, length = 25)
     private String nombre;
@@ -28,18 +26,18 @@ public class EstructurasGeografica {
     @Column(name = "estado", nullable = false, length = 15)
     private EstadoGeneralEnum estado = EstadoGeneralEnum.ACTIVO;
 
-    @ColumnDefault("0")
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany
-    private Set<com.banquito.core.general.modelo.LocacionesGeograficas> locacionesGeograficas = new LinkedHashSet<>();
+    private Set<LocacionesGeograficas> locacionesGeograficas = new LinkedHashSet<>();
 
 
-    public EstructurasGeografica() {
+    public EstructurasGeograficas() {
     }
 
-    public EstructurasGeografica(EstructurasGeograficaId id) {
+    public EstructurasGeograficas(EstructurasGeograficaId id) {
         this.id = id;
     }
 
@@ -51,11 +49,11 @@ public class EstructurasGeografica {
         this.id = id;
     }
 
-    public com.banquito.core.general.modelo.Paises getIdPais() {
+    public Paises getIdPais() {
         return idPais;
     }
 
-    public void setIdPais(com.banquito.core.general.modelo.Paises idPais) {
+    public void setIdPais(Paises idPais) {
         this.idPais = idPais;
     }
 
@@ -75,19 +73,19 @@ public class EstructurasGeografica {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public Set<com.banquito.core.general.modelo.LocacionesGeograficas> getLocacionesGeograficas() {
+    public Set<LocacionesGeograficas> getLocacionesGeograficas() {
         return locacionesGeograficas;
     }
 
-    public void setLocacionesGeograficas(Set<com.banquito.core.general.modelo.LocacionesGeograficas> locacionesGeograficas) {
+    public void setLocacionesGeograficas(Set<LocacionesGeograficas> locacionesGeograficas) {
         this.locacionesGeograficas = locacionesGeograficas;
     }
 

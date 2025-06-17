@@ -45,14 +45,12 @@ public class PrestamosClientes {
     @Column(name = "tasa_interes_aplicada", nullable = false, precision = 5, scale = 2)
     private BigDecimal tasaInteresAplicada;
 
-    @Column(name = "saldo_pendiente", nullable = false, precision = 15, scale = 2)
-    private BigDecimal saldoPendiente;
-
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idPrestamoCliente")
     private Set<ComisionesPrestamoClientes> comisionesPrestamoClientes = new LinkedHashSet<>();
@@ -153,14 +151,6 @@ public class PrestamosClientes {
         this.tasaInteresAplicada = tasaInteresAplicada;
     }
 
-    public BigDecimal getSaldoPendiente() {
-        return saldoPendiente;
-    }
-
-    public void setSaldoPendiente(BigDecimal saldoPendiente) {
-        this.saldoPendiente = saldoPendiente;
-    }
-
     public String getEstado() {
         return estado;
     }
@@ -169,11 +159,11 @@ public class PrestamosClientes {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -241,11 +231,12 @@ public class PrestamosClientes {
         return "PrestamosClientes [id=" + id + ", idCliente=" + idCliente + ", idPrestamo=" + idPrestamo
                 + ", fechaInicio=" + fechaInicio + ", fechaAprobacion=" + fechaAprobacion + ", fechaDesembolso="
                 + fechaDesembolso + ", fechaVencimiento=" + fechaVencimiento + ", montoSolicitado=" + montoSolicitado
-                + ", plazoMeses=" + plazoMeses + ", tasaInteresAplicada=" + tasaInteresAplicada + ", saldoPendiente="
-                + saldoPendiente + ", estado=" + estado + ", version=" + version + ", comisionesPrestamoClientes="
-                + comisionesPrestamoClientes + ", cronogramasPagos=" + cronogramasPagos
-                + ", garantiasTiposPrestamosClientes=" + garantiasTiposPrestamosClientes + ", segurosPrestamoClientes="
-                + segurosPrestamoClientes + "]";
+                + ", plazoMeses=" + plazoMeses + ", tasaInteresAplicada=" + tasaInteresAplicada + ", estado=" + estado
+                + ", version=" + version + ", comisionesPrestamoClientes=" + comisionesPrestamoClientes
+                + ", cronogramasPagos=" + cronogramasPagos + ", garantiasTiposPrestamosClientes="
+                + garantiasTiposPrestamosClientes + ", segurosPrestamoClientes=" + segurosPrestamoClientes + "]";
     }
+
+
 
 }

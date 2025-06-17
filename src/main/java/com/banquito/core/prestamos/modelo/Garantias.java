@@ -27,7 +27,7 @@ public class Garantias {
     private String estado;
 
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idGarantia")
     private Set<com.banquito.core.prestamos.modelo.GarantiasTiposPrestamos> garantiasTiposPrestamos = new LinkedHashSet<>();
@@ -79,11 +79,11 @@ public class Garantias {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

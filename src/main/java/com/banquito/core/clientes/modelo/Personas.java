@@ -2,18 +2,16 @@ package com.banquito.core.clientes.modelo;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "personas", schema = "public")
-public class Persona extends Participe {
+@Table(name = "personas")
+public class Personas extends Participe {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personas_id_gen")
-    @SequenceGenerator(name = "personas_id_gen", sequenceName = "personas_id_persona_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_persona", nullable = false)
     private Integer id;
 
@@ -51,13 +49,20 @@ public class Persona extends Participe {
     private String estado;
 
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idParticipe")
     private Set<AccionistasEmpresas> accionistasEmpresas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idEntidad")
     private Set<Clientes> clientes = new LinkedHashSet<>();
+
+    public Personas() {
+    }
+
+    public Personas(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -155,11 +160,11 @@ public class Persona extends Participe {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -177,6 +182,41 @@ public class Persona extends Participe {
 
     public void setClientes(Set<Clientes> clientes) {
         this.clientes = clientes;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Personas other = (Personas) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Persona [id=" + id + ", tipoIdentificacion=" + tipoIdentificacion + ", numeroIdentificacion="
+                + numeroIdentificacion + ", nombre=" + nombre + ", genero=" + genero + ", fechaNacimiento="
+                + fechaNacimiento + ", estadoCivil=" + estadoCivil + ", nivelEstudio=" + nivelEstudio
+                + ", correoElectronico=" + correoElectronico + ", fechaRegistro=" + fechaRegistro
+                + ", fechaActualizacion=" + fechaActualizacion + ", estado=" + estado + ", version=" + version
+                + ", accionistasEmpresas=" + accionistasEmpresas + ", clientes=" + clientes + "]";
     }
 
 }

@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tasas_intereses", schema = "public")
+@Table(name = "tasas_intereses")
 public class TasasIntereses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,13 +40,13 @@ public class TasasIntereses {
     private Set<Cuentas> cuentas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idTasaInteres")
-    private Set<com.banquito.core.cuentas.modelo.TasasPlazos> tasasPlazos = new LinkedHashSet<>();
+    private Set<TasasPlazos> tasasPlazos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idTasaInteres")
-    private Set<com.banquito.core.cuentas.modelo.TasasSaldos> tasasSaldos = new LinkedHashSet<>();
+    private Set<TasasSaldos> tasasSaldos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idTasaInteresPorDefecto")
-    private Set<com.banquito.core.cuentas.modelo.TiposCuentas> tiposCuentas = new LinkedHashSet<>();
+    private Set<TiposCuentas> tiposCuentas = new LinkedHashSet<>();
 
     public TasasIntereses() {}
 
@@ -126,27 +126,27 @@ public class TasasIntereses {
         this.cuentas = cuentas;
     }
 
-    public Set<com.banquito.core.cuentas.modelo.TasasPlazos> getTasasPlazos() {
+    public Set<TasasPlazos> getTasasPlazos() {
         return tasasPlazos;
     }
 
-    public void setTasasPlazos(Set<com.banquito.core.cuentas.modelo.TasasPlazos> tasasPlazos) {
+    public void setTasasPlazos(Set<TasasPlazos> tasasPlazos) {
         this.tasasPlazos = tasasPlazos;
     }
 
-    public Set<com.banquito.core.cuentas.modelo.TasasSaldos> getTasasSaldos() {
+    public Set<TasasSaldos> getTasasSaldos() {
         return tasasSaldos;
     }
 
-    public void setTasasSaldos(Set<com.banquito.core.cuentas.modelo.TasasSaldos> tasasSaldos) {
+    public void setTasasSaldos(Set<TasasSaldos> tasasSaldos) {
         this.tasasSaldos = tasasSaldos;
     }
 
-    public Set<com.banquito.core.cuentas.modelo.TiposCuentas> getTiposCuentas() {
+    public Set<TiposCuentas> getTiposCuentas() {
         return tiposCuentas;
     }
 
-    public void setTiposCuentas(Set<com.banquito.core.cuentas.modelo.TiposCuentas> tiposCuentas) {
+    public void setTiposCuentas(Set<TiposCuentas> tiposCuentas) {
         this.tiposCuentas = tiposCuentas;
     }
 

@@ -5,15 +5,13 @@ import com.banquito.core.general.enums.TipoFeriadosEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "feriados", schema = "public")
+@Table(name = "feriados")
 public class Feriados {
     @Id
-    @ColumnDefault("nextval('feriados_id_feriado_seq')")
     @Column(name = "id_feriado", nullable = false)
     private Integer id;
 
@@ -22,11 +20,11 @@ public class Feriados {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pais")
-    private com.banquito.core.general.modelo.Paises idPais;
+    private Paises idPais;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_locacion")
-    private com.banquito.core.general.modelo.LocacionesGeograficas idLocacion;
+    private LocacionesGeograficas idLocacion;
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
@@ -40,9 +38,9 @@ public class Feriados {
     @Column(name = "estado", nullable = false, length = 15)
     private EstadoGeneralEnum estado = EstadoGeneralEnum.ACTIVO;
 
-    @ColumnDefault("0")
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     public Feriados() {
     }
@@ -67,19 +65,19 @@ public class Feriados {
         this.fecha = fecha;
     }
 
-    public com.banquito.core.general.modelo.Paises getIdPais() {
+    public Paises getIdPais() {
         return idPais;
     }
 
-    public void setIdPais(com.banquito.core.general.modelo.Paises idPais) {
+    public void setIdPais(Paises idPais) {
         this.idPais = idPais;
     }
 
-    public com.banquito.core.general.modelo.LocacionesGeograficas getIdLocacion() {
+    public LocacionesGeograficas getIdLocacion() {
         return idLocacion;
     }
 
-    public void setIdLocacion(com.banquito.core.general.modelo.LocacionesGeograficas idLocacion) {
+    public void setIdLocacion(LocacionesGeograficas idLocacion) {
         this.idLocacion = idLocacion;
     }
 
@@ -107,11 +105,11 @@ public class Feriados {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

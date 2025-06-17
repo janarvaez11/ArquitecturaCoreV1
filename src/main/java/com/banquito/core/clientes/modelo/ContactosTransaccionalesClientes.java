@@ -1,19 +1,16 @@
 package com.banquito.core.clientes.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "contactos_transaccionales_clientes", schema = "public")
+@Table(name = "contactos_transaccionales_clientes")
 public class ContactosTransaccionalesClientes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('contactos_transaccionales_cliente_id_contacto_transaccional_seq')")
     @Column(name = "id_contacto_transaccional", nullable = false)
     private Integer id;
 
@@ -37,8 +34,15 @@ public class ContactosTransaccionalesClientes {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
+
+    public ContactosTransaccionalesClientes() {
+    }
+    public ContactosTransaccionalesClientes(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -96,12 +100,45 @@ public class ContactosTransaccionalesClientes {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ContactosTransaccionalesClientes other = (ContactosTransaccionalesClientes) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+    @Override
+    public String toString() {
+        return "ContactosTransaccionalesClientes [id=" + id + ", idCliente=" + idCliente + ", telefono=" + telefono
+                + ", correoElectronico=" + correoElectronico + ", fechaCreacion=" + fechaCreacion
+                + ", fechaActualizacion=" + fechaActualizacion + ", estado=" + estado + ", version=" + version + "]";
+    }
+
+    
+
+    
 
 }

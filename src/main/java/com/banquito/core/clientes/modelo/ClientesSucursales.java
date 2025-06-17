@@ -4,14 +4,11 @@ import com.banquito.core.general.modelo.Sucursales;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.math.BigDecimal;
-
 @Entity
-@Table(name = "clientes_sucursales", schema = "public")
+@Table(name = "clientes_sucursales")
 public class ClientesSucursales {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('clientes_sucursales_id_cliente_sucursal_seq')")
     @Column(name = "id_cliente_sucursal", nullable = false)
     private Integer id;
 
@@ -27,9 +24,16 @@ public class ClientesSucursales {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
-    @ColumnDefault("0")
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
+
+    public ClientesSucursales() {
+    }
+
+    public ClientesSucursales(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -63,12 +67,43 @@ public class ClientesSucursales {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ClientesSucursales other = (ClientesSucursales) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientesSucursales [id=" + id + ", idCliente=" + idCliente + ", codigoSucursal=" + codigoSucursal
+                + ", estado=" + estado + ", version=" + version + "]";
     }
 
 }

@@ -3,7 +3,6 @@ package com.banquito.core.prestamos.modelo;
 import com.banquito.core.general.modelo.Monedas;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -41,8 +40,9 @@ public class TiposPrestamos {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idTipoPrestamo")
     private Set<EsquemasAmortizaciones> esquemasAmortizacions = new LinkedHashSet<>();
@@ -132,11 +132,11 @@ public class TiposPrestamos {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

@@ -3,13 +3,12 @@ package com.banquito.core.general.modelo;
 import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "entidades_bancarias", schema = "public")
+@Table(name = "entidades_bancarias")
 public class EntidadesBancarias {
     @Id
     @Column(name = "id_entidad_bancaria", nullable = false)
@@ -28,14 +27,15 @@ public class EntidadesBancarias {
     @Column(name = "estado", nullable = false, length = 15)
     private EstadoGeneralEnum estado;
 
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idEntidadBancaria")
-    private Set<com.banquito.core.general.modelo.EntidadesBancariasMonedas> entidadesBancariasMonedas = new LinkedHashSet<>();
+    private Set<EntidadesBancariasMonedas> entidadesBancariasMonedas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idEntidadBancaria")
-    private Set<com.banquito.core.general.modelo.Sucursales> sucursales = new LinkedHashSet<>();
+    private Set<Sucursales> sucursales = new LinkedHashSet<>();
 
     public EntidadesBancarias() {
     }
@@ -84,27 +84,27 @@ public class EntidadesBancarias {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public Set<com.banquito.core.general.modelo.EntidadesBancariasMonedas> getEntidadesBancariasMonedas() {
+    public Set<EntidadesBancariasMonedas> getEntidadesBancariasMonedas() {
         return entidadesBancariasMonedas;
     }
 
-    public void setEntidadesBancariasMonedas(Set<com.banquito.core.general.modelo.EntidadesBancariasMonedas> entidadesBancariasMonedas) {
+    public void setEntidadesBancariasMonedas(Set<EntidadesBancariasMonedas> entidadesBancariasMonedas) {
         this.entidadesBancariasMonedas = entidadesBancariasMonedas;
     }
 
-    public Set<com.banquito.core.general.modelo.Sucursales> getSucursales() {
+    public Set<Sucursales> getSucursales() {
         return sucursales;
     }
 
-    public void setSucursales(Set<com.banquito.core.general.modelo.Sucursales> sucursales) {
+    public void setSucursales(Set<Sucursales> sucursales) {
         this.sucursales = sucursales;
     }
 

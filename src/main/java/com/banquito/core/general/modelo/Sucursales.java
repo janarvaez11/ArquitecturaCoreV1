@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "sucursales", schema = "public")
+@Table(name = "sucursales")
 public class Sucursales {
     @Id
     @Column(name = "codigo", nullable = false, length = 10)
@@ -52,9 +52,11 @@ public class Sucursales {
     @Column(name = "estado", nullable = false, length = 15)
     private EstadoSucursalesEnum estado = EstadoSucursalesEnum.ACTIVO;
 
-    @ColumnDefault("0")
+
+
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     public Sucursales() {
     }
@@ -159,11 +161,11 @@ public class Sucursales {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

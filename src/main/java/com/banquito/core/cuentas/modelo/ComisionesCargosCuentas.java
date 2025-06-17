@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "comisiones_cargos_cuentas", schema = "public")
+@Table(name = "comisiones_cargos_cuentas")
 public class ComisionesCargosCuentas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

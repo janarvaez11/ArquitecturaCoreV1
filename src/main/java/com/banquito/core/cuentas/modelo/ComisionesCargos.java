@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "comisiones_cargos", schema = "public")
+@Table(name = "comisiones_cargos")
 public class ComisionesCargos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,10 +40,10 @@ public class ComisionesCargos {
     private Long version;
 
     @OneToMany(mappedBy = "idComisionCargo")
-    private Set<com.banquito.core.cuentas.modelo.ComisionesCargosCuentas> comisionesCargosCuentas = new LinkedHashSet<>();
+    private Set<ComisionesCargosCuentas> comisionesCargosCuentas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idComision")
-    private Set<com.banquito.core.cuentas.modelo.ExencionesCuentas> exencionesCuentas = new LinkedHashSet<>();
+    private Set<ExencionesCuentas> exencionesCuentas = new LinkedHashSet<>();
 
     public ComisionesCargos() {}
 
@@ -67,11 +67,11 @@ public class ComisionesCargos {
         this.tipoComision = tipoComision;
     }
 
-    public com.banquito.core.cuentas.modelo.ServiciosAsociados getIdServicio() {
+    public ServiciosAsociados getIdServicio() {
         return idServicio;
     }
 
-    public void setIdServicio(com.banquito.core.cuentas.modelo.ServiciosAsociados idServicio) {
+    public void setIdServicio(ServiciosAsociados idServicio) {
         this.idServicio = idServicio;
     }
 
@@ -123,19 +123,19 @@ public class ComisionesCargos {
         this.version = version;
     }
 
-    public Set<com.banquito.core.cuentas.modelo.ComisionesCargosCuentas> getComisionesCargosCuentas() {
+    public Set<ComisionesCargosCuentas> getComisionesCargosCuentas() {
         return comisionesCargosCuentas;
     }
 
-    public void setComisionesCargosCuentas(Set<com.banquito.core.cuentas.modelo.ComisionesCargosCuentas> comisionesCargosCuentas) {
+    public void setComisionesCargosCuentas(Set<ComisionesCargosCuentas> comisionesCargosCuentas) {
         this.comisionesCargosCuentas = comisionesCargosCuentas;
     }
 
-    public Set<com.banquito.core.cuentas.modelo.ExencionesCuentas> getExencionesCuentas() {
+    public Set<ExencionesCuentas> getExencionesCuentas() {
         return exencionesCuentas;
     }
 
-    public void setExencionesCuentas(Set<com.banquito.core.cuentas.modelo.ExencionesCuentas> exencionesCuentas) {
+    public void setExencionesCuentas(Set<ExencionesCuentas> exencionesCuentas) {
         this.exencionesCuentas = exencionesCuentas;
     }
 

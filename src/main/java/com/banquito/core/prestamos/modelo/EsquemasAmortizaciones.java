@@ -2,7 +2,6 @@ package com.banquito.core.prestamos.modelo;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "esquemas_amortizacion")
@@ -29,7 +28,7 @@ public class EsquemasAmortizaciones {
     private String estado;
 
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     public EsquemasAmortizaciones() {
     }
@@ -86,11 +85,11 @@ public class EsquemasAmortizaciones {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

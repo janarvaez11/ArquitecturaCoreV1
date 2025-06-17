@@ -42,7 +42,7 @@ public class PagosPrestamos {
     private String estado;
 
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     public PagosPrestamos() {
     }
@@ -131,11 +131,11 @@ public class PagosPrestamos {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

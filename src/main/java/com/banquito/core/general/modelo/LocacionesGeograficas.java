@@ -1,16 +1,15 @@
 package com.banquito.core.general.modelo;
 
-import com.banquito.core.general.enums.EstadoLocacionesGeograficasEnum;
+import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "locaciones_geograficas", schema = "public")
+@Table(name = "locaciones_geograficas")
 public class LocacionesGeograficas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +21,7 @@ public class LocacionesGeograficas {
     private LocacionesGeograficas idLocacionPadre;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private EstructurasGeografica estructurasGeograficas;
+    private EstructurasGeograficas estructurasGeograficas;
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
@@ -39,11 +38,11 @@ public class LocacionesGeograficas {
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
-    private EstadoLocacionesGeograficasEnum estado = EstadoLocacionesGeograficasEnum.ACTIVO;
+    private EstadoGeneralEnum estado = EstadoGeneralEnum.ACTIVO;
 
-    @ColumnDefault("0")
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idLocacion")
     private Set<Feriados> feriados = new LinkedHashSet<>();
@@ -52,7 +51,7 @@ public class LocacionesGeograficas {
     private Set<LocacionesGeograficas> locacionesGeograficas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idLocacion")
-    private Set<com.banquito.core.general.modelo.Sucursales> sucursales = new LinkedHashSet<>();
+    private Set<Sucursales> sucursales = new LinkedHashSet<>();
 
     public LocacionesGeograficas() {
     }
@@ -77,11 +76,11 @@ public class LocacionesGeograficas {
         this.idLocacionPadre = idLocacionPadre;
     }
 
-    public EstructurasGeografica getEstructurasGeograficas() {
+    public EstructurasGeograficas getEstructurasGeograficas() {
         return estructurasGeograficas;
     }
 
-    public void setEstructurasGeograficas(EstructurasGeografica estructurasGeograficas) {
+    public void setEstructurasGeograficas(EstructurasGeograficas estructurasGeograficas) {
         this.estructurasGeograficas = estructurasGeograficas;
     }
 
@@ -117,19 +116,19 @@ public class LocacionesGeograficas {
         this.codigoPostal = codigoPostal;
     }
 
-    public EstadoLocacionesGeograficasEnum getEstado() {
+    public EstadoGeneralEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoLocacionesGeograficasEnum estado) {
+    public void setEstado(EstadoGeneralEnum estado) {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -149,11 +148,11 @@ public class LocacionesGeograficas {
         this.locacionesGeograficas = locacionesGeograficas;
     }
 
-    public Set<com.banquito.core.general.modelo.Sucursales> getSucursales() {
+    public Set<Sucursales> getSucursales() {
         return sucursales;
     }
 
-    public void setSucursales(Set<com.banquito.core.general.modelo.Sucursales> sucursales) {
+    public void setSucursales(Set<Sucursales> sucursales) {
         this.sucursales = sucursales;
     }
 

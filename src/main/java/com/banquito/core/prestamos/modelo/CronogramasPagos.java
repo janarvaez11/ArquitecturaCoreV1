@@ -46,8 +46,9 @@ public class CronogramasPagos {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idCuota")
     private Set<com.banquito.core.prestamos.modelo.PagosPrestamos> pagosPrestamos = new LinkedHashSet<>();
@@ -147,11 +148,11 @@ public class CronogramasPagos {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

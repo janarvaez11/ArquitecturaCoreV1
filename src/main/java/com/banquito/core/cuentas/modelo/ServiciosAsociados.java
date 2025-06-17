@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "servicios_asociados", schema = "public")
+@Table(name = "servicios_asociados")
 public class ServiciosAsociados {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class ServiciosAsociados {
     private Set<ComisionesCargos> comisionesCargos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idServicio")
-    private Set<com.banquito.core.cuentas.modelo.ServiciosAsociadosCuentas> serviciosAsociadosCuentas = new LinkedHashSet<>();
+    private Set<ServiciosAsociadosCuentas> serviciosAsociadosCuentas = new LinkedHashSet<>();
 
     public ServiciosAsociados() {}
 
@@ -86,11 +86,11 @@ public class ServiciosAsociados {
         this.comisionesCargos = comisionesCargos;
     }
 
-    public Set<com.banquito.core.cuentas.modelo.ServiciosAsociadosCuentas> getServiciosAsociadosCuentas() {
+    public Set<ServiciosAsociadosCuentas> getServiciosAsociadosCuentas() {
         return serviciosAsociadosCuentas;
     }
 
-    public void setServiciosAsociadosCuentas(Set<com.banquito.core.cuentas.modelo.ServiciosAsociadosCuentas> serviciosAsociadosCuentas) {
+    public void setServiciosAsociadosCuentas(Set<ServiciosAsociadosCuentas> serviciosAsociadosCuentas) {
         this.serviciosAsociadosCuentas = serviciosAsociadosCuentas;
     }
 

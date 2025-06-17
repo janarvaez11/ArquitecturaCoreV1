@@ -5,13 +5,12 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "monedas", schema = "public")
+@Table(name = "monedas")
 public class Monedas {
     @Id
     @Column(name = "id_moneda", nullable = false, length = 3)
@@ -20,7 +19,7 @@ public class Monedas {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_pais")
-    private com.banquito.core.general.modelo.Paises idPais;
+    private Paises idPais;
 
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
@@ -32,8 +31,9 @@ public class Monedas {
     @Column(name = "estado", nullable = false, length = 15)
     private EstadoGeneralEnum estado;
 
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idMoneda")
     private Set<EntidadesBancariasMonedas> entidadesBancariasMonedas = new LinkedHashSet<>();
@@ -53,11 +53,11 @@ public class Monedas {
         this.idMoneda = idMoneda;
     }
 
-    public com.banquito.core.general.modelo.Paises getIdPais() {
+    public Paises getIdPais() {
         return idPais;
     }
 
-    public void setIdPais(com.banquito.core.general.modelo.Paises idPais) {
+    public void setIdPais(Paises idPais) {
         this.idPais = idPais;
     }
 
@@ -85,11 +85,11 @@ public class Monedas {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
