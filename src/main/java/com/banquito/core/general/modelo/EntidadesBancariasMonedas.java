@@ -1,10 +1,12 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "entidades_bancarias_monedas")
@@ -24,11 +26,19 @@ public class EntidadesBancariasMonedas {
     @JoinColumn(name = "id_moneda", nullable = false)
     private com.banquito.core.general.modelo.Monedas idMoneda;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoGeneralEnum estado;
 
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
+
+    public EntidadesBancariasMonedas() {
+    }
+
+    public EntidadesBancariasMonedas(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -54,11 +64,11 @@ public class EntidadesBancariasMonedas {
         this.idMoneda = idMoneda;
     }
 
-    public String getEstado() {
+    public EstadoGeneralEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoGeneralEnum estado) {
         this.estado = estado;
     }
 
@@ -70,4 +80,29 @@ public class EntidadesBancariasMonedas {
         this.version = version;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        EntidadesBancariasMonedas that = (EntidadesBancariasMonedas) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EntidadesBancariasMonedas{" +
+                "id=" + id +
+                ", idEntidadBancaria=" + idEntidadBancaria +
+                ", idMoneda=" + idMoneda +
+                ", estado=" + estado +
+                ", version=" + version +
+                '}';
+    }
 }

@@ -1,9 +1,11 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -22,8 +24,9 @@ public class EntidadesBancarias {
     @Column(name = "codigo_internacional", nullable = false, length = 20)
     private String codigoInternacional;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoGeneralEnum estado;
 
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
@@ -33,6 +36,13 @@ public class EntidadesBancarias {
 
     @OneToMany(mappedBy = "idEntidadBancaria")
     private Set<com.banquito.core.general.modelo.Sucursales> sucursales = new LinkedHashSet<>();
+
+    public EntidadesBancarias() {
+    }
+
+    public EntidadesBancarias(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -66,11 +76,11 @@ public class EntidadesBancarias {
         this.codigoInternacional = codigoInternacional;
     }
 
-    public String getEstado() {
+    public EstadoGeneralEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoGeneralEnum estado) {
         this.estado = estado;
     }
 
@@ -97,5 +107,35 @@ public class EntidadesBancarias {
     public void setSucursales(Set<com.banquito.core.general.modelo.Sucursales> sucursales) {
         this.sucursales = sucursales;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        EntidadesBancarias that = (EntidadesBancarias) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EntidadesBancarias{" +
+                "id=" + id +
+                ", codigoLocal='" + codigoLocal + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", codigoInternacional='" + codigoInternacional + '\'' +
+                ", estado=" + estado +
+                ", version=" + version +
+                ", entidadesBancariasMonedas=" + entidadesBancariasMonedas +
+                ", sucursales=" + sucursales +
+                '}';
+    }
+
 
 }

@@ -1,10 +1,12 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -20,8 +22,9 @@ public class Paises {
     @Column(name = "codigo_telefono", nullable = false, length = 4)
     private String codigoTelefono;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoGeneralEnum estado;
 
     @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
@@ -35,6 +38,13 @@ public class Paises {
 
     @OneToMany(mappedBy = "idPais")
     private Set<Monedas> monedas = new LinkedHashSet<>();
+
+    public Paises() {
+    }
+
+    public Paises(String idPais) {
+        this.idPais = idPais;
+    }
 
     public String getIdPais() {
         return idPais;
@@ -60,11 +70,11 @@ public class Paises {
         this.codigoTelefono = codigoTelefono;
     }
 
-    public String getEstado() {
+    public EstadoGeneralEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoGeneralEnum estado) {
         this.estado = estado;
     }
 
@@ -100,4 +110,29 @@ public class Paises {
         this.monedas = monedas;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Paises paises = (Paises) o;
+        return Objects.equals(idPais, paises.idPais);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(idPais);
+    }
+
+    @Override
+    public String toString() {
+        return "Paises{" +
+                "idPais='" + idPais + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", codigoTelefono='" + codigoTelefono + '\'' +
+                ", estado=" + estado +
+                ", version=" + version +
+                ", estructurasGeograficas=" + estructurasGeograficas +
+                ", feriados=" + feriados +
+                ", monedas=" + monedas +
+                '}';
+    }
 }

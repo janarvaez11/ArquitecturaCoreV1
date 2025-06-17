@@ -1,10 +1,12 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoLocacionesGeograficasEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -34,9 +36,10 @@ public class LocacionesGeograficas {
     @Column(name = "codigo_postal", nullable = false, length = 6)
     private String codigoPostal;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoLocacionesGeograficasEnum estado = EstadoLocacionesGeograficasEnum.ACTIVO;
 
     @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
@@ -50,6 +53,13 @@ public class LocacionesGeograficas {
 
     @OneToMany(mappedBy = "idLocacion")
     private Set<com.banquito.core.general.modelo.Sucursales> sucursales = new LinkedHashSet<>();
+
+    public LocacionesGeograficas() {
+    }
+
+    public LocacionesGeograficas(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -107,11 +117,11 @@ public class LocacionesGeograficas {
         this.codigoPostal = codigoPostal;
     }
 
-    public String getEstado() {
+    public EstadoLocacionesGeograficasEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoLocacionesGeograficasEnum estado) {
         this.estado = estado;
     }
 
@@ -147,4 +157,33 @@ public class LocacionesGeograficas {
         this.sucursales = sucursales;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        LocacionesGeograficas that = (LocacionesGeograficas) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "LocacionesGeograficas{" +
+                "id=" + id +
+                ", idLocacionPadre=" + idLocacionPadre +
+                ", estructurasGeograficas=" + estructurasGeograficas +
+                ", nombre='" + nombre + '\'' +
+                ", codigoTelefonoArea='" + codigoTelefonoArea + '\'' +
+                ", codigoGeografico='" + codigoGeografico + '\'' +
+                ", codigoPostal='" + codigoPostal + '\'' +
+                ", estado=" + estado +
+                ", version=" + version +
+                ", feriados=" + feriados +
+                ", locacionesGeograficas=" + locacionesGeograficas +
+                ", sucursales=" + sucursales +
+                '}';
+    }
 }

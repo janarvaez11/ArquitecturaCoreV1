@@ -1,11 +1,13 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoGeneralEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -26,14 +28,22 @@ public class Monedas {
     @Column(name = "simbolo", nullable = false, length = 5)
     private String simbolo;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoGeneralEnum estado;
 
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
 
     @OneToMany(mappedBy = "idMoneda")
     private Set<EntidadesBancariasMonedas> entidadesBancariasMonedas = new LinkedHashSet<>();
+
+    public Monedas() {
+    }
+
+    public Monedas(String idMoneda) {
+        this.idMoneda = idMoneda;
+    }
 
     public String getIdMoneda() {
         return idMoneda;
@@ -67,11 +77,11 @@ public class Monedas {
         this.simbolo = simbolo;
     }
 
-    public String getEstado() {
+    public EstadoGeneralEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoGeneralEnum estado) {
         this.estado = estado;
     }
 
@@ -91,4 +101,28 @@ public class Monedas {
         this.entidadesBancariasMonedas = entidadesBancariasMonedas;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Monedas monedas = (Monedas) o;
+        return Objects.equals(idMoneda, monedas.idMoneda);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(idMoneda);
+    }
+
+    @Override
+    public String toString() {
+        return "Monedas{" +
+                "idMoneda='" + idMoneda + '\'' +
+                ", idPais=" + idPais +
+                ", nombre='" + nombre + '\'' +
+                ", simbolo='" + simbolo + '\'' +
+                ", estado=" + estado +
+                ", version=" + version +
+                ", entidadesBancariasMonedas=" + entidadesBancariasMonedas +
+                '}';
+    }
 }

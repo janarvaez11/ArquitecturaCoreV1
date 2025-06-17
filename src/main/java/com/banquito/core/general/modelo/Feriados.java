@@ -1,10 +1,13 @@
 package com.banquito.core.general.modelo;
 
+import com.banquito.core.general.enums.EstadoGeneralEnum;
+import com.banquito.core.general.enums.TipoFeriadosEnum;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "feriados", schema = "public")
@@ -28,16 +31,25 @@ public class Feriados {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false, length = 15)
-    private String tipo;
+    private TipoFeriadosEnum tipo;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVO'")
     @Column(name = "estado", nullable = false, length = 15)
-    private String estado;
+    private EstadoGeneralEnum estado = EstadoGeneralEnum.ACTIVO;
 
     @ColumnDefault("0")
     @Column(name = "version", nullable = false, precision = 9)
     private BigDecimal version;
+
+    public Feriados() {
+    }
+
+    public Feriados(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -79,19 +91,19 @@ public class Feriados {
         this.nombre = nombre;
     }
 
-    public String getTipo() {
+    public TipoFeriadosEnum getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoFeriadosEnum tipo) {
         this.tipo = tipo;
     }
 
-    public String getEstado() {
+    public EstadoGeneralEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoGeneralEnum estado) {
         this.estado = estado;
     }
 
@@ -103,4 +115,32 @@ public class Feriados {
         this.version = version;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Feriados feriados = (Feriados) o;
+        return Objects.equals(id, feriados.id);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Feriados{" +
+                "id=" + id +
+                ", fecha=" + fecha +
+                ", idPais=" + idPais +
+                ", idLocacion=" + idLocacion +
+                ", nombre='" + nombre + '\'' +
+                ", tipo=" + tipo +
+                ", estado=" + estado +
+                ", version=" + version +
+                '}';
+    }
 }
