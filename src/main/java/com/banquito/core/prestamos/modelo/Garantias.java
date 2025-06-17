@@ -30,7 +30,7 @@ public class Garantias {
     private Long version;
 
     @OneToMany(mappedBy = "idGarantia")
-    private Set<com.banquito.core.prestamos.modelo.GarantiasTiposPrestamos> garantiasTiposPrestamos = new LinkedHashSet<>();
+    private Set<GarantiasTiposPrestamos> garantiasTiposPrestamos = new LinkedHashSet<>();
 
     public Garantias() {
     }
@@ -87,12 +87,12 @@ public class Garantias {
         this.version = version;
     }
 
-    public Set<com.banquito.core.prestamos.modelo.GarantiasTiposPrestamos> getGarantiasTiposPrestamos() {
+    public Set<GarantiasTiposPrestamos> getGarantiasTiposPrestamos() {
         return garantiasTiposPrestamos;
     }
 
     public void setGarantiasTiposPrestamos(
-            Set<com.banquito.core.prestamos.modelo.GarantiasTiposPrestamos> garantiasTiposPrestamos) {
+            Set<GarantiasTiposPrestamos> garantiasTiposPrestamos) {
         this.garantiasTiposPrestamos = garantiasTiposPrestamos;
     }
 

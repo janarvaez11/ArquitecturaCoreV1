@@ -13,7 +13,7 @@ public class EsquemasAmortizaciones {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_prestamo")
-    private com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo;
+    private TiposPrestamos idTipoPrestamo;
 
     @Column(name = "nombre", nullable = false, length = 20)
     private String nombre;
@@ -45,11 +45,11 @@ public class EsquemasAmortizaciones {
         this.id = id;
     }
 
-    public com.banquito.core.prestamos.modelo.TiposPrestamos getIdTipoPrestamo() {
+    public TiposPrestamos getIdTipoPrestamo() {
         return idTipoPrestamo;
     }
 
-    public void setIdTipoPrestamo(com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo) {
+    public void setIdTipoPrestamo(TiposPrestamos idTipoPrestamo) {
         this.idTipoPrestamo = idTipoPrestamo;
     }
 

@@ -18,7 +18,7 @@ public class SegurosPrestamoClientes {
 
     @ManyToOne
     @JoinColumn(name = "id_seguro_prestamo", nullable = false)
-    private com.banquito.core.prestamos.modelo.SegurosPrestamos idSeguroPrestamo;
+    private SegurosPrestamos idSeguroPrestamo;
 
     @Column(name = "monto_total", nullable = false, precision = 15, scale = 2)
     private BigDecimal montoTotal;
@@ -56,11 +56,11 @@ public class SegurosPrestamoClientes {
         this.idPrestamoCliente = idPrestamoCliente;
     }
 
-    public com.banquito.core.prestamos.modelo.SegurosPrestamos getIdSeguroPrestamo() {
+    public SegurosPrestamos getIdSeguroPrestamo() {
         return idSeguroPrestamo;
     }
 
-    public void setIdSeguroPrestamo(com.banquito.core.prestamos.modelo.SegurosPrestamos idSeguroPrestamo) {
+    public void setIdSeguroPrestamo(SegurosPrestamos idSeguroPrestamo) {
         this.idSeguroPrestamo = idSeguroPrestamo;
     }
 

@@ -19,7 +19,7 @@ public class GarantiasTiposPrestamos {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_prestamo", nullable = false)
-    private com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo;
+    private TiposPrestamos idTipoPrestamo;
 
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
@@ -29,7 +29,7 @@ public class GarantiasTiposPrestamos {
     private Long version;
 
     @OneToMany(mappedBy = "idGarantiaTipoPrestamo")
-    private Set<com.banquito.core.prestamos.modelo.GarantiasTiposPrestamosClientes> garantiasTiposPrestamosClientes = new LinkedHashSet<>();
+    private Set<GarantiasTiposPrestamosClientes> garantiasTiposPrestamosClientes = new LinkedHashSet<>();
 
     public GarantiasTiposPrestamos() {
     }
@@ -54,11 +54,11 @@ public class GarantiasTiposPrestamos {
         this.idGarantia = idGarantia;
     }
 
-    public com.banquito.core.prestamos.modelo.TiposPrestamos getIdTipoPrestamo() {
+    public TiposPrestamos getIdTipoPrestamo() {
         return idTipoPrestamo;
     }
 
-    public void setIdTipoPrestamo(com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo) {
+    public void setIdTipoPrestamo(TiposPrestamos idTipoPrestamo) {
         this.idTipoPrestamo = idTipoPrestamo;
     }
 
@@ -78,12 +78,12 @@ public class GarantiasTiposPrestamos {
         this.version = version;
     }
 
-    public Set<com.banquito.core.prestamos.modelo.GarantiasTiposPrestamosClientes> getGarantiasTiposPrestamosClientes() {
+    public Set<GarantiasTiposPrestamosClientes> getGarantiasTiposPrestamosClientes() {
         return garantiasTiposPrestamosClientes;
     }
 
     public void setGarantiasTiposPrestamosClientes(
-            Set<com.banquito.core.prestamos.modelo.GarantiasTiposPrestamosClientes> garantiasTiposPrestamosClientes) {
+            Set<GarantiasTiposPrestamosClientes> garantiasTiposPrestamosClientes) {
         this.garantiasTiposPrestamosClientes = garantiasTiposPrestamosClientes;
     }
 

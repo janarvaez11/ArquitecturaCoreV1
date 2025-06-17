@@ -17,7 +17,7 @@ public class CronogramasPagos {
 
     @ManyToOne
     @JoinColumn(name = "id_prestamo_cliente", nullable = false)
-    private com.banquito.core.prestamos.modelo.PrestamosClientes idPrestamoCliente;
+    private PrestamosClientes idPrestamoCliente;
 
     @Column(name = "numero_cuota", nullable = false)
     private Integer numeroCuota;
@@ -51,7 +51,7 @@ public class CronogramasPagos {
     private Long version;
 
     @OneToMany(mappedBy = "idCuota")
-    private Set<com.banquito.core.prestamos.modelo.PagosPrestamos> pagosPrestamos = new LinkedHashSet<>();
+    private Set<PagosPrestamos> pagosPrestamos = new LinkedHashSet<>();
 
     public CronogramasPagos() {
     }
@@ -68,11 +68,11 @@ public class CronogramasPagos {
         this.id = id;
     }
 
-    public com.banquito.core.prestamos.modelo.PrestamosClientes getIdPrestamoCliente() {
+    public PrestamosClientes getIdPrestamoCliente() {
         return idPrestamoCliente;
     }
 
-    public void setIdPrestamoCliente(com.banquito.core.prestamos.modelo.PrestamosClientes idPrestamoCliente) {
+    public void setIdPrestamoCliente(PrestamosClientes idPrestamoCliente) {
         this.idPrestamoCliente = idPrestamoCliente;
     }
 
@@ -156,11 +156,11 @@ public class CronogramasPagos {
         this.version = version;
     }
 
-    public Set<com.banquito.core.prestamos.modelo.PagosPrestamos> getPagosPrestamos() {
+    public Set<PagosPrestamos> getPagosPrestamos() {
         return pagosPrestamos;
     }
 
-    public void setPagosPrestamos(Set<com.banquito.core.prestamos.modelo.PagosPrestamos> pagosPrestamos) {
+    public void setPagosPrestamos(Set<PagosPrestamos> pagosPrestamos) {
         this.pagosPrestamos = pagosPrestamos;
     }
 

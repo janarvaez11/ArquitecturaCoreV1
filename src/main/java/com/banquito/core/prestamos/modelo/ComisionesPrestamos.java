@@ -15,11 +15,11 @@ public class ComisionesPrestamos {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_comision", nullable = false)
-    private com.banquito.core.prestamos.modelo.TiposComisiones idTipoComision;
+    private TiposComisiones idTipoComision;
 
     @ManyToOne
     @JoinColumn(name = "id_prestamo", nullable = false)
-    private com.banquito.core.prestamos.modelo.Prestamos idPrestamo;
+    private Prestamos idPrestamo;
 
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
@@ -46,19 +46,19 @@ public class ComisionesPrestamos {
         this.id = id;
     }
 
-    public com.banquito.core.prestamos.modelo.TiposComisiones getIdTipoComision() {
+    public TiposComisiones getIdTipoComision() {
         return idTipoComision;
     }
 
-    public void setIdTipoComision(com.banquito.core.prestamos.modelo.TiposComisiones idTipoComision) {
+    public void setIdTipoComision(TiposComisiones idTipoComision) {
         this.idTipoComision = idTipoComision;
     }
 
-    public com.banquito.core.prestamos.modelo.Prestamos getIdPrestamo() {
+    public Prestamos getIdPrestamo() {
         return idPrestamo;
     }
 
-    public void setIdPrestamo(com.banquito.core.prestamos.modelo.Prestamos idPrestamo) {
+    public void setIdPrestamo(Prestamos idPrestamo) {
         this.idPrestamo = idPrestamo;
     }
 

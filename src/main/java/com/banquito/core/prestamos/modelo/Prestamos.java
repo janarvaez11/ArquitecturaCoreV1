@@ -17,7 +17,7 @@ public class Prestamos {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_prestamo", nullable = false)
-    private com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo;
+    private TiposPrestamos idTipoPrestamo;
 
     @ManyToOne
     @JoinColumn(name = "id_moneda", nullable = false)
@@ -64,10 +64,10 @@ public class Prestamos {
     private Set<ComisionesPrestamos> comisionesPrestamos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idPrestamo")
-    private Set<com.banquito.core.prestamos.modelo.PrestamosClientes> prestamosClientes = new LinkedHashSet<>();
+    private Set<PrestamosClientes> prestamosClientes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idPrestamo")
-    private Set<com.banquito.core.prestamos.modelo.SegurosPrestamos> segurosPrestamos = new LinkedHashSet<>();
+    private Set<SegurosPrestamos> segurosPrestamos = new LinkedHashSet<>();
 
     public Prestamos() {
     }
@@ -84,11 +84,11 @@ public class Prestamos {
         this.id = id;
     }
 
-    public com.banquito.core.prestamos.modelo.TiposPrestamos getIdTipoPrestamo() {
+    public TiposPrestamos getIdTipoPrestamo() {
         return idTipoPrestamo;
     }
 
-    public void setIdTipoPrestamo(com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo) {
+    public void setIdTipoPrestamo(TiposPrestamos idTipoPrestamo) {
         this.idTipoPrestamo = idTipoPrestamo;
     }
 
@@ -204,19 +204,19 @@ public class Prestamos {
         this.comisionesPrestamos = comisionesPrestamos;
     }
 
-    public Set<com.banquito.core.prestamos.modelo.PrestamosClientes> getPrestamosClientes() {
+    public Set<PrestamosClientes> getPrestamosClientes() {
         return prestamosClientes;
     }
 
-    public void setPrestamosClientes(Set<com.banquito.core.prestamos.modelo.PrestamosClientes> prestamosClientes) {
+    public void setPrestamosClientes(Set<PrestamosClientes> prestamosClientes) {
         this.prestamosClientes = prestamosClientes;
     }
 
-    public Set<com.banquito.core.prestamos.modelo.SegurosPrestamos> getSegurosPrestamos() {
+    public Set<SegurosPrestamos> getSegurosPrestamos() {
         return segurosPrestamos;
     }
 
-    public void setSegurosPrestamos(Set<com.banquito.core.prestamos.modelo.SegurosPrestamos> segurosPrestamos) {
+    public void setSegurosPrestamos(Set<SegurosPrestamos> segurosPrestamos) {
         this.segurosPrestamos = segurosPrestamos;
     }
 

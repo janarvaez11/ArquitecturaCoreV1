@@ -15,7 +15,7 @@ public class GarantiasTiposPrestamosClientes {
 
     @ManyToOne
     @JoinColumn(name = "id_prestamo_cliente", nullable = false)
-    private com.banquito.core.prestamos.modelo.PrestamosClientes idPrestamoCliente;
+    private PrestamosClientes idPrestamoCliente;
 
     @ManyToOne
     @JoinColumn(name = "id_garantia_tipo_prestamo", nullable = false)
@@ -55,11 +55,11 @@ public class GarantiasTiposPrestamosClientes {
         this.id = id;
     }
 
-    public com.banquito.core.prestamos.modelo.PrestamosClientes getIdPrestamoCliente() {
+    public PrestamosClientes getIdPrestamoCliente() {
         return idPrestamoCliente;
     }
 
-    public void setIdPrestamoCliente(com.banquito.core.prestamos.modelo.PrestamosClientes idPrestamoCliente) {
+    public void setIdPrestamoCliente(PrestamosClientes idPrestamoCliente) {
         this.idPrestamoCliente = idPrestamoCliente;
     }
 
