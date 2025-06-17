@@ -1,9 +1,6 @@
 package com.banquito.core.prestamos.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,16 +8,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "cronogramas_pagos", schema = "public")
+@Table(name = "cronogramas_pagos")
 public class CronogramasPagos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('cronogramas_pagos_id_cuota_seq')")
     @Column(name = "id_cuota", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne
     @JoinColumn(name = "id_prestamo_cliente", nullable = false)
     private com.banquito.core.prestamos.modelo.PrestamosClientes idPrestamoCliente;
 
@@ -36,11 +31,9 @@ public class CronogramasPagos {
     @Column(name = "interes", nullable = false, precision = 15, scale = 2)
     private BigDecimal interes;
 
-    @ColumnDefault("0")
     @Column(name = "comisiones", nullable = false, precision = 15, scale = 2)
     private BigDecimal comisiones;
 
-    @ColumnDefault("0")
     @Column(name = "seguros", nullable = false, precision = 15, scale = 2)
     private BigDecimal seguros;
 
@@ -50,7 +43,6 @@ public class CronogramasPagos {
     @Column(name = "saldo_pendiente", nullable = false, precision = 15, scale = 2)
     private BigDecimal saldoPendiente;
 
-    @ColumnDefault("'PENDIENTE'")
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
@@ -59,6 +51,13 @@ public class CronogramasPagos {
 
     @OneToMany(mappedBy = "idCuota")
     private Set<com.banquito.core.prestamos.modelo.PagosPrestamos> pagosPrestamos = new LinkedHashSet<>();
+
+    public CronogramasPagos() {
+    }
+
+    public CronogramasPagos(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -162,6 +161,40 @@ public class CronogramasPagos {
 
     public void setPagosPrestamos(Set<com.banquito.core.prestamos.modelo.PagosPrestamos> pagosPrestamos) {
         this.pagosPrestamos = pagosPrestamos;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CronogramasPagos other = (CronogramasPagos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "CronogramasPagos [id=" + id + ", idPrestamoCliente=" + idPrestamoCliente + ", numeroCuota="
+                + numeroCuota + ", fechaProgramada=" + fechaProgramada + ", montoCuota=" + montoCuota + ", interes="
+                + interes + ", comisiones=" + comisiones + ", seguros=" + seguros + ", total=" + total
+                + ", saldoPendiente=" + saldoPendiente + ", estado=" + estado + ", version=" + version
+                + ", pagosPrestamos=" + pagosPrestamos + "]";
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "personas", schema = "public")
-public class Persona {
+public class Persona extends Participe {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personas_id_gen")
     @SequenceGenerator(name = "personas_id_gen", sequenceName = "personas_id_persona_seq", allocationSize = 1)

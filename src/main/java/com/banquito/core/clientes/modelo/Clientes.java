@@ -2,21 +2,18 @@ package com.banquito.core.clientes.modelo;
 
 import com.banquito.core.general.modelo.Paises;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "clientes", schema = "public")
+@Table(name = "clientes")
 public class Clientes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('clientes_id_cliente_seq')")
     @Column(name = "id_cliente", nullable = false)
     private Integer id;
 
@@ -26,7 +23,7 @@ public class Clientes {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_entidad", nullable = false)
-    private com.banquito.core.clientes.modelo.Empresas idEntidad;
+    private Empresas idEntidad;
 
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
@@ -51,7 +48,6 @@ public class Clientes {
     @Column(name = "canal_afiliacion", nullable = false, length = 15)
     private String canalAfiliacion;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "fecha_creacion", nullable = false)
     private Instant fechaCreacion;
 
@@ -64,23 +60,30 @@ public class Clientes {
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
+    @Version
     @Column(name = "version", nullable = false, precision = 9)
-    private BigDecimal version;
+    private Long version;
 
     @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.ClientesSucursales> clientesSucursales = new LinkedHashSet<>();
+    private Set<ClientesSucursales> clientesSucursales = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.ContactosTransaccionalesClientes> contactosTransaccionalesClientes = new LinkedHashSet<>();
+    private Set<ContactosTransaccionalesClientes> contactosTransaccionalesClientes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.DireccionesClientes> direccionesClientes = new LinkedHashSet<>();
+    private Set<DireccionesClientes> direccionesClientes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.RepresentantesEmpresas> representantesEmpresas = new LinkedHashSet<>();
+    private Set<RepresentantesEmpresas> representantesEmpresas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idCliente")
-    private Set<com.banquito.core.clientes.modelo.TelefonosClientes> telefonosClientes = new LinkedHashSet<>();
+    private Set<TelefonosClientes> telefonosClientes = new LinkedHashSet<>();
+
+    public Clientes() {
+    }
+    public Clientes(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -98,11 +101,11 @@ public class Clientes {
         this.tipoEntidad = tipoEntidad;
     }
 
-    public com.banquito.core.clientes.modelo.Empresas getIdEntidad() {
+    public Empresas getIdEntidad() {
         return idEntidad;
     }
 
-    public void setIdEntidad(com.banquito.core.clientes.modelo.Empresas idEntidad) {
+    public void setIdEntidad(Empresas idEntidad) {
         this.idEntidad = idEntidad;
     }
 
@@ -194,52 +197,54 @@ public class Clientes {
         this.estado = estado;
     }
 
-    public BigDecimal getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigDecimal version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public Set<com.banquito.core.clientes.modelo.ClientesSucursales> getClientesSucursales() {
+    public Set<ClientesSucursales> getClientesSucursales() {
         return clientesSucursales;
     }
 
-    public void setClientesSucursales(Set<com.banquito.core.clientes.modelo.ClientesSucursales> clientesSucursales) {
+    public void setClientesSucursales(Set<ClientesSucursales> clientesSucursales) {
         this.clientesSucursales = clientesSucursales;
     }
 
-    public Set<com.banquito.core.clientes.modelo.ContactosTransaccionalesClientes> getContactosTransaccionalesClientes() {
+    public Set<ContactosTransaccionalesClientes> getContactosTransaccionalesClientes() {
         return contactosTransaccionalesClientes;
     }
 
-    public void setContactosTransaccionalesClientes(Set<com.banquito.core.clientes.modelo.ContactosTransaccionalesClientes> contactosTransaccionalesClientes) {
+    public void setContactosTransaccionalesClientes(Set<ContactosTransaccionalesClientes> contactosTransaccionalesClientes) {
         this.contactosTransaccionalesClientes = contactosTransaccionalesClientes;
     }
 
-    public Set<com.banquito.core.clientes.modelo.DireccionesClientes> getDireccionesClientes() {
+    public Set<DireccionesClientes> getDireccionesClientes() {
         return direccionesClientes;
     }
 
-    public void setDireccionesClientes(Set<com.banquito.core.clientes.modelo.DireccionesClientes> direccionesClientes) {
+    public void setDireccionesClientes(Set<DireccionesClientes> direccionesClientes) {
         this.direccionesClientes = direccionesClientes;
     }
 
-    public Set<com.banquito.core.clientes.modelo.RepresentantesEmpresas> getRepresentantesEmpresas() {
+    public Set<RepresentantesEmpresas> getRepresentantesEmpresas() {
         return representantesEmpresas;
     }
 
-    public void setRepresentantesEmpresas(Set<com.banquito.core.clientes.modelo.RepresentantesEmpresas> representantesEmpresas) {
+    public void setRepresentantesEmpresas(Set<RepresentantesEmpresas> representantesEmpresas) {
         this.representantesEmpresas = representantesEmpresas;
     }
 
-    public Set<com.banquito.core.clientes.modelo.TelefonosClientes> getTelefonosClientes() {
+    public Set<TelefonosClientes> getTelefonosClientes() {
         return telefonosClientes;
     }
 
-    public void setTelefonosClientes(Set<com.banquito.core.clientes.modelo.TelefonosClientes> telefonosClientes) {
+    public void setTelefonosClientes(Set<TelefonosClientes> telefonosClientes) {
         this.telefonosClientes = telefonosClientes;
     }
+
+    
 
 }

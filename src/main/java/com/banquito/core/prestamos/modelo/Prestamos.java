@@ -2,31 +2,24 @@ package com.banquito.core.prestamos.modelo;
 
 import com.banquito.core.general.modelo.Monedas;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "prestamos", schema = "public")
+@Table(name = "prestamos")
 public class Prestamos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('prestamos_id_prestamo_seq')")
     @Column(name = "id_prestamo", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne
     @JoinColumn(name = "id_tipo_prestamo", nullable = false)
     private com.banquito.core.prestamos.modelo.TiposPrestamos idTipoPrestamo;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne
     @JoinColumn(name = "id_moneda", nullable = false)
     private Monedas idMoneda;
 
@@ -36,7 +29,6 @@ public class Prestamos {
     @Column(name = "descripcion", nullable = false, length = 200)
     private String descripcion;
 
-    @ColumnDefault("CURRENT_DATE")
     @Column(name = "fecha_modificacion", nullable = false)
     private Instant fechaModificacion;
 
@@ -61,7 +53,6 @@ public class Prestamos {
     @Column(name = "tipo_amortizacion", nullable = false, length = 20)
     private String tipoAmortizacion;
 
-    @ColumnDefault("'SOLICITADO'")
     @Column(name = "estado", nullable = false, length = 15)
     private String estado;
 
@@ -76,6 +67,13 @@ public class Prestamos {
 
     @OneToMany(mappedBy = "idPrestamo")
     private Set<com.banquito.core.prestamos.modelo.SegurosPrestamos> segurosPrestamos = new LinkedHashSet<>();
+
+    public Prestamos() {
+    }
+
+    public Prestamos(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -219,6 +217,42 @@ public class Prestamos {
 
     public void setSegurosPrestamos(Set<com.banquito.core.prestamos.modelo.SegurosPrestamos> segurosPrestamos) {
         this.segurosPrestamos = segurosPrestamos;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Prestamos other = (Prestamos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Prestamos [id=" + id + ", idTipoPrestamo=" + idTipoPrestamo + ", idMoneda=" + idMoneda + ", nombre="
+                + nombre + ", descripcion=" + descripcion + ", fechaModificacion=" + fechaModificacion
+                + ", baseCalculo=" + baseCalculo + ", tasaInteres=" + tasaInteres + ", montoMinimo=" + montoMinimo
+                + ", montoMaximo=" + montoMaximo + ", plazoMinimoMeses=" + plazoMinimoMeses + ", plazoMaximoMeses="
+                + plazoMaximoMeses + ", tipoAmortizacion=" + tipoAmortizacion + ", estado=" + estado + ", version="
+                + version + ", comisionesPrestamos=" + comisionesPrestamos + ", prestamosClientes=" + prestamosClientes
+                + ", segurosPrestamos=" + segurosPrestamos + "]";
     }
 
 }

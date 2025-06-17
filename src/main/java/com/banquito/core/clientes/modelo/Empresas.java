@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "empresas", schema = "public")
-public class Empresas {
+public class Empresas extends Participe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('empresas_id_empresa_seq')")
@@ -187,7 +187,8 @@ public class Empresas {
         return representantesEmpresas;
     }
 
-    public void setRepresentantesEmpresas(Set<com.banquito.core.clientes.modelo.RepresentantesEmpresas> representantesEmpresas) {
+    public void setRepresentantesEmpresas(
+            Set<com.banquito.core.clientes.modelo.RepresentantesEmpresas> representantesEmpresas) {
         this.representantesEmpresas = representantesEmpresas;
     }
 

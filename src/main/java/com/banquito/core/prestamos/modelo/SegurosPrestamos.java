@@ -1,30 +1,24 @@
 package com.banquito.core.prestamos.modelo;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "seguros_prestamos", schema = "public")
+@Table(name = "seguros_prestamos")
 public class SegurosPrestamos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('seguros_prestamos_id_seguro_prestamo_seq')")
     @Column(name = "id_seguro_prestamo", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne
     @JoinColumn(name = "id_seguro", nullable = false)
     private Seguros idSeguro;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @ManyToOne
     @JoinColumn(name = "id_prestamo", nullable = false)
     private Prestamos idPrestamo;
 
@@ -36,6 +30,13 @@ public class SegurosPrestamos {
 
     @OneToMany(mappedBy = "idSeguroPrestamo")
     private Set<SegurosPrestamoClientes> segurosPrestamoClientes = new LinkedHashSet<>();
+
+    public SegurosPrestamos() {
+    }
+
+    public SegurosPrestamos(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -83,6 +84,37 @@ public class SegurosPrestamos {
 
     public void setSegurosPrestamoClientes(Set<SegurosPrestamoClientes> segurosPrestamoClientes) {
         this.segurosPrestamoClientes = segurosPrestamoClientes;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SegurosPrestamos other = (SegurosPrestamos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "SegurosPrestamos [id=" + id + ", idSeguro=" + idSeguro + ", idPrestamo=" + idPrestamo + ", estado="
+                + estado + ", version=" + version + ", segurosPrestamoClientes=" + segurosPrestamoClientes + "]";
     }
 
 }
